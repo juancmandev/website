@@ -1,0 +1,32 @@
+---
+import PostItem from "@/components/post-item";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+allPosts.sort(
+    (a, b) =>
+        Date.parse(b.data.date.toString()) - Date.parse(a.data.date.toString()),
+);
+---
+
+<Layout title="Blog" description="Check my projects.">
+    <section class="prose prose-invert">
+        <h1>Blog</h1>
+        <p>Long format about thoughts and other topics.</p>
+    </section>
+    <ul class="mt-4 flex flex-col gap-4">
+        {
+            allPosts.map((blogpost) => (
+                <li>
+                    <PostItem
+                        type="blog"
+                        slug={blogpost.slug}
+                        date={blogpost.data.date!}
+                        title={blogpost.data.title!}
+                    />
+                </li>
+            ))
+        }
+    </ul>
+</Layout>

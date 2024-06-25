@@ -1,0 +1,36 @@
+---
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar.astro";
+import "@/styles/globals.css";
+
+interface Props {
+    title: string;
+}
+
+const { title, description, lang } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang || "en"}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link
+            rel="alternate"
+            title="juancmandev"
+            type="application/rss+xml"
+            href={new URL("rss.xml", Astro.site)}
+        />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
+    <body>
+        <Navbar />
+        <main class="px-4 min-h-screen max-w-[65ch] py-32 mx-auto">
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>

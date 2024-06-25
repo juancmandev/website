@@ -1,0 +1,1219 @@
+---
+title: Build a fullstack web app
+description: Build a fullstack web app using Next.js as meta-framework and PostgreSQL as database.
+tags: [Next.js, PostgreSQL, Prisma, Auth.js, tailwindcss, shadcn/ui]
+image: /portfolio/build-a-fullstack-app/banner.png
+imageCaption: Banner with the tech stack used in this tutorial, Next.js, TailwindCSS, shadcn/ui, Prisma, PostgreSQL and Auth.js.
+date: 2024-1-18
+author: Juan Manzanero
+rss: true
+---
+
+![Banner with the tech stack used in this tutorial, Next.js, TailwindCSS, shadcn/ui, Prisma, PostgreSQL and Auth.js](@/assets/portfolio/build-a-fullstack-app/banner.png)
+_Tech stack used in this tutorial_
+
+[GitHub repo](https://github.com/juancmandev/fullstack-app)
+
+## Content
+
+1. [Introduction](#1-introduction)
+2. [Initial setup](#2-initial-setup)
+   1. [Install shadcn/ui](#21-install-shadcnui)
+   2. [Create a db using Docker](#22-create-a-db-using-docker)
+   3. [Install Prisma](#23-install-prisma)
+   4. [Config Auth.js](#24-config-authjs)
+3. [Improve your UI](#3-improve-your-ui)
+4. [Add CRUD functionality](#4-add-crud-functionality)
+5. [Conclusion](#5-conclusion)
+
+## 1. Introduction
+
+In this tutorial, we will develop a fullstack web app with the following tech
+stack:
+
+- [Next.js](https://nextjs.org/) as meta-framework
+- [TailwindCSS](https://tailwindcss.com/) for styling
+- [shadcn/ui](https://ui.shadcn.com/) for UI components
+- [Prisma](https://www.prisma.io/) as ORM
+- [PostgreSQL](https://www.postgresql.org/) as database
+- [Auth.js](https://authjs.dev/) for authentication
+- [Docker](https://www.docker.com/) for creating an intance of a PostgreSQL
+  database locally
+
+We'll learn some of the fundamentals of this tech stack, like using **server
+components** in Next.js, or creating **API endpoints** using the **app router**.
+
+## 2. Initial setup
+
+Let's start creating a new Next.js project, in your **terminal** run:
+
+```bash title="Terminal"
+npx create-next-app@latest
+```
+
+Make sure to mark **Yes** the following options:
+
+- Would you like to use **TypeScript**?
+- Would you like to use **ESLint**?
+- Would you like to use **Tailwind CSS**?
+- Would you like to use **'src/' directory**?
+- Would you like to use **App Router**? (recommended)
+
+```bash title="Terminal"
+> What is your project named? fullstack-app
+> Would you like to use TypeScript? No / Yes
+> Would you like to use ESLint? No / Yes
+> Would you like to use Tailwind CSS? No / Yes
+> Would you like to use `src/` directory? No / Yes
+> Would you like to use App Router? (recommended) No / Yes
+> Would you like to customize the default import alias (@/*)? No / Yes
+> What import alias would you like configured? @/*
+```
+
+Wait until the dependencies installation is completed, then access to the
+project directory:
+
+```bash title="Terminal"
+cd fullstack-app
+```
+
+Open your code editor of your preference.
+
+### 2.1 Install shadcn/ui
+
+This components will help us a lot building the **UI** along with TailwindCSS.
+
+First, initialize shadcn/ui:
+
+```bash title="Terminal"
+npx shadcn-ui@latest init
+```
+
+Make sure to config shadcn/ui according your project configuration.
+
+You can check the [shadcn/ui docs](https://ui.shadcn.com/docs) for every
+component that you could need, each components is installed individually.
+
+### 2.2 Create a db using Docker
+
+Make sure to have [Docker](https://www.docker.com/) installed in your machine.
+
+First you need to pull a PostgreSQL image from Docker Hub:
+
+```bash title="Terminal"
+docker pull postgres
+```
+
+Then, create a container with the image:
+
+```bash title="Terminal"
+docker run --name my-postgres -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
+```
+
+### 2.3 Install Prisma
+
+Install Prisma using your dependency manager, in this case **npm**:
+
+```bash title="Terminal"
+npm install prisma -D
+```
+
+Now initialize Prisma:
+
+```bash title="Terminal"
+npx prisma init
+```
+
+A new `./prisma` direcotry will be created in the root of your project, with a
+schema.prisma file.
+
+You'll create your schemas in this file.
+
+Add this model as an example:
+
+```prisma title="prisma/schema.prisma"
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+}
+```
+
+Update your `.env` file with the following:
+
+```env title=".env"
+DATABASE_URL="postgresql://postgres:password@localhost:5432/postgres?schema=public"
+```
+
+In the URL is your username (by default is postgres), your password (in this
+case password), the host (by default is localhost), the port (by default is
+5432), the database name (by default is postgres) and the schema (by default is
+public).
+
+Create your first migration to test if Prisma can connect to your local
+database:
+
+```bash title="Terminal"
+npx prisma migrate dev --name init
+```
+
+If everything is ok, you'll see a new /migrations directory with a new file
+inside.
+
+> If you have an error, make sure you can connect to your local DB. Delete, and
+> create the container again if necessary.
+
+### 2.4 Config Auth.js
+
+Add this models to your **prisma schema**:
+
+```prisma title="prisma/schema.prisma"
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+```
+
+These models are for **Auth.js**, now we can install it with the prisma adapter:
+
+```bash title="Terminal"
+npm install @prisma/client @auth/prisma-adapter
+```
+
+Instal nodemailer too, as we'll use magic links for authentication:
+
+```bash title="Terminal"
+npm install nodemailer -D
+```
+
+Now create a `src/utils/db.ts` and initialize **prisma**:
+
+```ts title="src/utils/db.ts"
+import { PrismaClient } from '@prisma/client';
+
+const prismaClientSingleton = () => {
+  return new PrismaClient();
+};
+
+declare global {
+  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
+}
+
+const prisma = globalThis.prisma ?? prismaClientSingleton();
+
+export default prisma;
+
+if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;
+```
+
+Then, create a `src/utils/auth.ts` file to config **Auth.js**:
+
+```ts title="src/utils/auth.ts"
+import type { NextAuthOptions } from 'next-auth';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import EmailProvider from 'next-auth/providers/email';
+import prisma from '@/libs/db';
+import { Adapter } from 'next-auth/adapters';
+
+export const authOptions = {
+  adapter: PrismaAdapter(prisma) as Adapter,
+  providers: [
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: process.env.EMAIL_FROM,
+    }),
+  ],
+  callbacks: {
+    session: async ({ session, user }) => {
+      return {
+        ...session,
+        user: user,
+      };
+    },
+  },
+} satisfies NextAuthOptions;
+```
+
+This config is for using an email provider, for this project we'll use
+[Resend](https://resend.com/).
+
+Create an account and get the next credentials in your .env file:
+
+- EMAIL_SERVER_HOST: smtp.resend.com
+- EMAIL_SERVER_PORT: 465
+- EMAIL_SERVER_USER: resend
+- EMAIL_FROM: onboarding@resend(dot)dev
+- EMAIL_SERVER_PASSWORD: yor api key
+
+Now, create a `src/app/api/auth/[...nextauth]/route.ts` file:
+
+```ts title="src/app/api/auth/[...nextauth]/route.ts"
+import { authOptions } from '@/libs/auth';
+import NextAuth from 'next-auth/next';
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
+```
+
+This file is for handling the authentication in our app.
+
+You can now authenticate users with a magic link sent by email.
+
+Create a `src/app/auth/signin-form.tsx` file:
+
+```tsx title="src/app/auth/signin-form.tsx"
+'use client';
+
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+
+export default function SigninForm() {
+  const [email, setEmail] = useState<null | string>(null);
+
+  async function handleSubmit() {
+    await signIn('email', {
+      email,
+      callbackUrl: `${window.location.origin}`,
+    });
+  }
+
+  return (
+    <form className='mt-5 space-y-4' action={handleSubmit}>
+      <section className='flex flex-col gap-2'>
+        <label htmlFor='email'>Email</label>
+        <input
+          id='email'
+          type='email'
+          name='email'
+          onChange={(e) => setEmail(e.target.value)}
+          className='w-max p-1 border border-slate-400'
+        />
+      </section>
+      <button type='submit'>Sign in</button>
+    </form>
+  );
+}
+```
+
+Import it to your `src/app/auth/page.tsx` file:
+
+```tsx title="src/app/auth/page.tsx"
+import { authOptions } from '@/libs/auth';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import SigninForm from './form';
+
+export default async function Signin() {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    return redirect('/');
+  }
+
+  return (
+    <>
+      <h1>Sign in</h1>
+
+      <SigninForm />
+    </>
+  );
+}
+```
+
+As you can see, you can redirect users if they're not authenticated getting the
+session with **getServerSession**.
+
+## 3. Improve your UI
+
+Let's create a short posts like app.
+
+First, add some shadcn/ui components and update your components, we'll create
+new components too:
+
+```bash title="Terminal"
+npx shadcn-ui@latest add button
+```
+
+```bash title="Terminal"
+npx shadcn-ui@latest add dialog
+```
+
+```bash title="Terminal"
+npx shadcn-ui@latest add input
+```
+
+```bash title="Terminal"
+npx shadcn-ui@latest add textarea
+```
+
+```bash title="Terminal"
+npx shadcn-ui@latest add form
+```
+
+```bash title="Terminal"
+npx shadcn-ui@latest add label
+```
+
+```bash title="Terminal"
+npx shadcn-ui@latest add sonner
+```
+
+We'll add the endpoints URL for these components, but we'll create them later.
+
+`src/app/auth/signin-form.tsx`
+
+Here we'll update the UI and add form validation.
+
+```tsx title="src/app/auth/signin-form.tsx"
+'use client';
+
+import { signIn } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+  email: z.string().email(),
+});
+
+export default function SigninForm() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  async function onSubmit({ email }: z.infer<typeof formSchema>) {
+    await signIn('email', {
+      email,
+      callbackUrl: `${window.location.origin}`,
+    });
+  }
+
+  return (
+    <Form {...form}>
+      <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder='address@example.com' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className='w-full' type='submit'>
+          Send magic link
+        </Button>
+      </form>
+    </Form>
+  );
+}
+```
+
+`src/components/post/create.tsx`
+
+Update UI components and form validation.
+
+```tsx title="src/components/post/create.tsx"
+'use client';
+
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { SessionProps } from './types';
+
+const formSchema = z.object({
+  title: z.string().min(1).max(100),
+  content: z.string().min(1),
+});
+
+export default function CreatePost(props: SessionProps) {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      content: '',
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...values,
+          authorId: props.session.user?.id,
+        }),
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        toast(json.message);
+
+        return;
+      }
+
+      toast('Post created!');
+      form.reset();
+      setOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>Create post</Button>
+      </DialogTrigger>
+      <DialogContent className='max-w-[300px]'>
+        <DialogHeader className='text-left'>
+          <DialogTitle>Create post</DialogTitle>
+          <DialogDescription>
+            Please <strong>do not</strong> post <strong>NSFW</strong> content.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Hi there!' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='content'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Content</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder='Testing this great app!'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className='w-full' type='submit'>
+              Post
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+`src/app/page.tsx`
+
+Fetch data from Prisma, as this page is a server component, we can fetch it
+directly.
+
+```tsx title="src/app/page.tsx"
+import { authOptions } from '@/libs/auth';
+import { getServerSession } from 'next-auth';
+import prisma from '@/libs/db';
+import CreatePost from '@/components/post/create';
+import Post from '@/components/post';
+
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
+  // You can fetch data to Prisma in server components
+  const posts = await prisma.post.findMany({
+    include: {
+      author: true,
+    },
+  });
+
+  return (
+    <>
+      <h1 className='mb-5 font-bold text-xl'>Home</h1>
+      {session ? (
+        <>
+          <CreatePost session={session} />
+        </>
+      ) : (
+        <>
+          <p>You are not logged in</p>
+        </>
+      )}
+      <h3 className='text-lg font-semibold mt-10'>Posts</h3>
+      <ul className='mt-5 space-y-2.5'>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <li key={post.id}>
+              <Post {...post} session={session} />
+            </li>
+          ))
+        ) : (
+          <p>No posts</p>
+        )}
+      </ul>
+    </>
+  );
+}
+```
+
+`src/components/post/item.tsx`
+
+```tsx title="src/components/post/item.tsx"
+'use client';
+
+import DeletePost from './delete';
+import EditPost from './edit';
+import { TPostProps } from './types';
+
+export default function PostItem(props: TPostProps) {
+  return (
+    <article className='w-max p-2 border border-slate-500 rounded-md'>
+      <header className='flex justify-between items-center'>
+        <h2 className='font-bold text-lg'>{props.title}</h2>
+        {props.session?.user?.id === props.authorId && (
+          <section className='space-x-2'>
+            <EditPost {...props} />
+            <DeletePost {...props} />
+          </section>
+        )}
+      </header>
+      <p>{props.content}</p>
+      <span className='text-sm'>
+        Posted by {props.author?.email || 'anon'} at{' '}
+        {new Date(props.createdAt).toLocaleString()}
+      </span>
+    </article>
+  );
+}
+```
+
+`src/components/post/edit.tsx`
+
+Create a button icon for opening a dialog rendering the post data for editing,
+add validation and fetch to the API endpoint.
+
+```tsx title="src/components/post/edit.tsx"
+'use client';
+
+import { useState } from 'react';
+import { Edit } from 'lucide-react';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { TPostProps } from './types';
+
+const formSchema = z.object({
+  title: z.string().min(1).max(100),
+  content: z.string().min(1),
+});
+
+export default function EditPost(props: TPostProps) {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: props.title,
+      content: props.content,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...values,
+          id: props.id,
+        }),
+      });
+      const json = await res.json();
+      console.log(json);
+
+      if (!res.ok) {
+        toast(json.message);
+
+        return;
+      }
+
+      toast('Post edited!');
+      form.reset();
+      setOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant='secondary' size='icon'>
+          <Edit />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className='max-w-[300px]'>
+        <DialogHeader className='text-left'>
+          <DialogTitle>Edit post</DialogTitle>
+          <DialogDescription>
+            Please <strong>do not</strong> post <strong>NSFW</strong> content.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Hi there!' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='content'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Content</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder='Testing this great app!'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogClose asChild>
+              <Button className='w-full' type='submit'>
+                Edit post
+              </Button>
+            </DialogClose>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+`src/components/post/delete.tsx`
+
+Create a button icon for opening a dialog for deleting the post, add validation
+and fetch to the API endpoint.
+
+```tsx title="src/components/post/delete.tsx"
+'use client';
+
+import { LucideTrash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { TPostProps } from './types';
+
+export default function DeletePost(props: TPostProps) {
+  const router = useRouter();
+
+  async function handleDelete() {
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: props.id,
+        }),
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        toast(json.message);
+
+        return;
+      }
+
+      toast('Post deleted!');
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant='destructive' size='icon'>
+          <LucideTrash2 />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className='max-w-[300px]'>
+        <DialogHeader className='text-left'>
+          <DialogTitle>Delete post</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to <strong>delete</strong> this post? This
+            action cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <footer className='flex flex-col gap-2'>
+          <DialogClose asChild>
+            <Button variant='secondary' className='w-full'>
+              No, keep post
+            </Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <Button
+              onClick={handleDelete}
+              variant='destructive'
+              className='w-full'
+            >
+              Yes, delete post
+            </Button>
+          </DialogClose>
+        </footer>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+`src/components/post/types.ts`
+
+```ts title="src/components/post/types.ts"
+type SessionProps = {
+  session: any;
+};
+
+type TPostProps = {
+  author: {
+    id: string;
+    name: string | null;
+    email: string | null;
+    emailVerified: Date | null;
+    image: string | null;
+  } | null;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  content: string;
+  authorId: string | null;
+  session: any;
+};
+
+export type { SessionProps, TPostProps };
+```
+
+`src/components/sign-out.tsx`
+
+A simple sign out button.
+
+```tsx title="src/components/sign-out.tsx"
+'use client';
+
+import { signOut } from 'next-auth/react';
+import { Button } from './ui/button';
+
+export default function SignOut() {
+  return <Button onClick={() => signOut()}>Sign out</Button>;
+}
+```
+
+`src/components/navbar.tsx`
+
+Render the sign out or sign in button depending if the user is logged in or not.
+
+```tsx title="src/components/navbar.tsx"
+import Link from 'next/link';
+import { Button } from './ui/button';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/libs/auth';
+import SignOut from './sign-out';
+
+export default async function Navbar() {
+  const session = await getServerSession(authOptions);
+
+  return (
+    <nav className='w-full p-4 border-b flex justify-between items-center'>
+      <section>
+        <Button variant='link' className='px-0 font-semibold text-lg'>
+          <Link href='/'>Fullstack app</Link>
+        </Button>
+      </section>
+      <section>
+        {session ? (
+          <SignOut />
+        ) : (
+          <Button asChild>
+            <Link href='/auth'>Sign in</Link>
+          </Button>
+        )}
+      </section>
+    </nav>
+  );
+}
+```
+
+`src/app/layout.tsx`
+
+Add your **Navbar** and **Toaster** components and some styles.
+
+```tsx title="src/app/layout.tsx"
+import { Inter } from 'next/font/google';
+import Navbar from '@/components/navbar';
+import { Toaster } from '@/components/ui/sonner';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
+
+interface Props extends React.PropsWithChildren {}
+
+export default function RootLayout(props: Props) {
+  return (
+    <html lang='en'>
+      <body className={inter.className}>
+        <Navbar />
+        <main className='px-4 py-8'>{props.children}</main>
+        <Toaster />
+      </body>
+    </html>
+  );
+}
+```
+
+## 4. Add CRUD functionality
+
+Now we can add Create, Read, Update and Delete functionality to our app.
+
+`prisma/schema.prisma`
+
+Update your Prisma schema adding to User model a relationship with Post model:
+
+```prisma title="prisma/schema.prisma"
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  posts         Post[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+```
+
+Generate a new Prisma migration:
+
+```bash title="Terminal"
+npx prisma migrate dev --name add-posts
+```
+
+Now, create a `src/app/api/posts/route.ts` file with a **POST**, **PUT** and
+**DELETE** async functions:
+
+```ts title="src/app/api/posts/route.ts"
+import prisma from '@/libs/db';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    if (!req.body) {
+      return NextResponse.json({
+        ok: false,
+        status: 400,
+        message: 'Data required',
+      });
+    }
+
+    const json = await req.json();
+    const res = await prisma.post.create({
+      data: json,
+    });
+
+    return NextResponse.json({
+      ok: true,
+      status: 201,
+      data: res,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({
+        ok: false,
+        status: 500,
+        message: error.message,
+      });
+    }
+
+    return NextResponse.json({
+      ok: false,
+      status: 500,
+      message: 'Internal server error',
+    });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const res = await prisma.post.update({
+      where: { id: body.id },
+      data: {
+        title: body.title,
+        content: body.content,
+      },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      status: 200,
+      data: res,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({
+        ok: false,
+        status: 500,
+        message: error.message,
+      });
+    }
+
+    return NextResponse.json({
+      ok: false,
+      status: 500,
+      message: 'Internal server error',
+    });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const res = await prisma.post.delete({
+      where: { id: body.id },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      status: 200,
+      data: res,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({
+        ok: false,
+        status: 500,
+        message: error.message,
+      });
+    }
+
+    return NextResponse.json({
+      ok: false,
+      status: 500,
+      message: 'Internal server error',
+    });
+  }
+}
+```
+
+Try creating a post in the home.
+
+The page will refresh and you'll see the post, as you created it, only you can
+edit or delete it.
+
+## 5. Conclusion
+
+As you can see, create a fullstack app with Next.js and Prisma is really easy.
+
+Of course, it could be improved, adding server side validation for inputs,
+adding pagination for posts in the home, etc.

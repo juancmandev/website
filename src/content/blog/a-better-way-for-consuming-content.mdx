@@ -1,0 +1,122 @@
+---
+title: A Better Way for Consuming Content
+description: Get your news without visiting websites with algorithms that shows content that you don't want to see.
+tags: [Tech]
+image: /blog/a-better-way-for-consuming-content/banner.webp
+imageCaption: Newspapers. Photo by Ashni on Unsplash
+date: 2024-4-11
+author: Juan Manzanero
+rss: true
+---
+
+![Newspapers](@/assets/blog/a-better-way-for-consuming-content/banner.webp) _Photo by
+[Ashni](https://unsplash.com/@ashni_ahlawat?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
+on
+[Unsplash](https://unsplash.com/photos/text-ePWaAwUn80k?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)_
+
+Get your news without visiting websites with algorithms that shows content that you don't want to see.
+
+## Algorithms that Dictates What You See
+
+Social media are not designed for showing you the latest and most important
+news, but for showing you content dictated by an algorithm.
+
+And this content is normally viral, and viral doesn't mean interesting.
+
+Usually this algorithm prioritizes content that get you angry.
+
+Content that promotes negativity gets more clicks rather than those whose
+promotes positivity.
+
+That's the reason why Twitter and Facebook are full of stupid and irrelevant
+posts (usually).
+
+Of course, it's really cool when the algorithm shows you content that you like,
+discovering new people and pages, but that's not usual.
+
+Without mentioning the annoying ads and more stuff that wants you to click it.
+
+Meta (previously Facebook) knows about this, and encourages it in their products
+like Instagram and Facebook, and the same for Twitter.
+
+## The Solution: News Aggregators (RSS)
+
+RSS is an acronym for "Really Simple Syndication".
+
+It's an ancient technology, not promoted so much by companies.
+
+That's because when you read a post in an RSS Reader, you don't need to visit
+the website, and the website can't show advertisements using Google Ads (for
+example). You don't generate traffic; your visits don't count, at least not if
+you don't open the post link in your RSS Reader.
+
+The good thing is that almost every RSS Reader shows you content sorted by date,
+not by a creepy algorithm that wants you to be mad.
+
+[For my website](https://github.com/juancmandev/website/blob/main/scripts/rss.ts),
+I use a Node.js script that takes the `.mdx` files inside `content/blog` and
+`content/portfolio`, then generates the RSS Items, those with the `rss: true` in
+the metadata.
+
+## How to Use an RSS Reader
+
+First, you should download one.
+
+There are many options:
+
+- [NetNewsWire](https://netnewswire.com/): a native RSS Reader for macOS and
+  iOS, free and Open Source, my favorite option as an Apple ~~Sinner~~ user
+- [Akregator](https://apps.kde.org/akregator): from the KDE project for Linux
+- [Feeder](https://play.google.com/store/apps/details?id=com.nononsenseapps.feeder.play):
+  for Android
+- [Raven Reader](https://ravenreader.app/): desktop cross-platform
+
+### Adding Feeds
+
+Now you need to search for the RSS URL on your favorite website, like
+[this one](https://juancman.dev/rss.xml)!
+
+```
+https://juancman.dev/rss.xml
+```
+
+If you open it, you'll get a weird page with code similar to HTML.
+
+Once copied, go to your RSS feed and search for "Add feed" or something similar,
+and paste the link, and you're done! Now you'll get the latest posts from my
+website.
+
+### Adding Social Media Feeds
+
+You can even add feeds from sites like Reddit or YouTube.
+
+#### Reddit
+
+Just change `[SUBREDDIT]` for the name of your subreddit to add:
+
+```
+https://reddit.com/r/[SUBREDDIT]/new/.rss
+```
+
+#### YouTube
+
+Go to the channel to add, then go to the **About** tab, then click on **Share >
+Copy channel ID**.
+
+Now just change `[CHANNEL ID]` for the copied one:
+
+```
+https://youtube.com/feeds/videos.xml?channel_id=[CHANNEL ID]
+```
+
+### My Favorite Feeds
+
+- [juancman.dev (obviously!)](https://www.juancman.dev/rss.xml)
+- [Astronomic Picture of the Day (apod)](https://apod.com/feed.rss)
+- [Earth Science Picture of the Day (epod)](https://feeds2.feedburner.com/EarthSciencePictureoftheDay)
+- [Erick Murphy (cool guy)](https://ericmurphy.xyz/index.xml)
+
+## More About RSS
+
+- [Privacy Tools - RSS Feed Readers](https://www.privacytools.io/privacy-rss-feed-readers)
+- [Privacy Guides - News Aggregators](https://www.privacyguides.org/en/news-aggregators/)

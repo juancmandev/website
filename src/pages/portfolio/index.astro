@@ -1,0 +1,35 @@
+---
+import PostItem from "@/components/post-item";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const allProjects = await getCollection(
+    "portfolio",
+    ({ data }) => data.draft !== true,
+);
+allProjects.sort(
+    (a, b) =>
+        Date.parse(b.data.date.toString()) - Date.parse(a.data.date.toString()),
+);
+---
+
+<Layout title="Blog" description="Long format about thoughts and other topics.">
+    <section class="prose prose-invert">
+        <h1 class="text-3xl font-bold">Portfolio</h1>
+        <p>Check my projects.</p>
+    </section>
+    <ul class="mt-4 flex flex-col gap-4">
+        {
+            allProjects.map((project) => (
+                <li>
+                    <PostItem
+                        type="portfolio"
+                        slug={project.slug}
+                        date={project.data.date!}
+                        title={project.data.title!}
+                    />
+                </li>
+            ))
+        }
+    </ul>
+</Layout>
