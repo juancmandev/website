@@ -1,13 +1,10 @@
 ---
 import { marked } from "marked";
 import formatDate from "@/utils/format-date";
-import { Debug } from "astro:components";
 
 const props = Astro.props;
 const content = marked.parse(props.content);
 ---
-
-<Debug answer={props} />
 
 <article class="rounded-md border px-4 py-2">
     <header class="mb-2">
