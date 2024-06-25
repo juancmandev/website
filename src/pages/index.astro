@@ -4,7 +4,7 @@ import LinkButton from "@/components/link-button";
 import { getCollection } from "astro:content";
 import PostItem from "@/components/post-item";
 import { Image } from "astro:assets";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
 allPosts.sort(
