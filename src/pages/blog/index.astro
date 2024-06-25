@@ -1,13 +1,11 @@
 ---
 import PostItem from "@/components/post-item";
 import Layout from "@/layouts/Layout.astro";
+import { sortContentByDate } from "@/utils/sorts";
 import { getCollection } from "astro:content";
 
 const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
-allPosts.sort(
-    (a, b) =>
-        Date.parse(b.data.date.toString()) - Date.parse(a.data.date.toString()),
-);
+sortContentByDate(allPosts);
 ---
 
 <Layout title="Blog" description="Check my projects.">
@@ -17,7 +15,7 @@ allPosts.sort(
     </section>
     <ul class="mt-4 flex flex-col gap-4">
         {
-            allPosts.map((blogpost) => (
+            allPosts.map((blogpost: any) => (
                 <li>
                     <PostItem
                         type="blog"

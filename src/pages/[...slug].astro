@@ -11,7 +11,7 @@ interface Props {
 export async function getStaticPaths() {
     const allPages = await getCollection("pages");
 
-    return allPages.map((page) => ({
+    return allPages.map((page: CollectionEntry<"pages">) => ({
         params: { slug: page.slug },
         props: { page },
     }));

@@ -1,8 +1,8 @@
 ---
-import { navItems } from "@/utils/nav-links";
-import MobileMenu from "@/components/mobile-menu";
 import logo from "@/assets/logo.png";
 import { Image } from "astro:assets";
+import { navItems } from "@/utils/nav-links";
+import MobileMenu from "@/components/mobile-menu";
 import LinkButton from "@/components/link-button";
 ---
 
@@ -23,6 +23,7 @@ import LinkButton from "@/components/link-button";
                     src={logo}
                     width={80}
                     height={80}
+                    loading="eager"
                     class="w-auto h-auto"
                     alt="juancmandev logo"
                 />
@@ -31,7 +32,7 @@ import LinkButton from "@/components/link-button";
         <section class="hidden items-center md:flex">
             <ul class="flex items-center gap-1">
                 {
-                    navItems.map((navItem) => (
+                    navItems.map((navItem: any) => (
                         <li class="w-max h-max">
                             <LinkButton
                                 variant="link"

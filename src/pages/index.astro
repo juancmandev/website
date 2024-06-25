@@ -3,22 +3,17 @@ import Layout from "@/layouts/Layout.astro";
 import LinkButton from "@/components/link-button";
 import { getCollection } from "astro:content";
 import PostItem from "@/components/post-item";
+import { sortContentByDate } from "@/utils/sorts";
 
 const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
-allPosts.sort(
-    (a, b) =>
-        Date.parse(b.data.date.toString()) - Date.parse(a.data.date.toString()),
-);
+sortContentByDate(allPosts);
 const last3Blogs = allPosts.slice(0, 3);
 
 const allProjects = await getCollection(
     "portfolio",
     ({ data }) => data.draft !== true,
 );
-allProjects.sort(
-    (a, b) =>
-        Date.parse(b.data.date.toString()) - Date.parse(a.data.date.toString()),
-);
+sortContentByDate(allProjects);
 const last3Projects = allProjects.slice(0, 3);
 ---
 
@@ -46,7 +41,7 @@ const last3Projects = allProjects.slice(0, 3);
             <h2 class="text-3xl">Latest posts</h2>
             <ul class="mt-4 flex flex-col gap-4">
                 {
-                    last3Blogs.map((blogpost) => (
+                    last3Blogs.map((blogpost: any) => (
                         <li>
                             <PostItem
                                 type="blog"
@@ -66,7 +61,7 @@ const last3Projects = allProjects.slice(0, 3);
             <h2 class="text-3xl">Latest projects</h2>
             <ul class="mt-4 flex flex-col gap-4">
                 {
-                    last3Projects.map((project) => (
+                    last3Projects.map((project: any) => (
                         <li>
                             <PostItem
                                 type="portfolio"
