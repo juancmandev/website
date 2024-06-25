@@ -1,38 +1,34 @@
 ---
 import { marked } from "marked";
 import formatDate from "@/utils/format-date";
-import type { MicroblogsResponse, TagsResponse } from "@/utils/pocketbase";
-
-type Props = MicroblogsResponse<unknown> & {
-    props: {
-        tags: TagsResponse[];
-    };
-};
+import { Debug } from "astro:components";
 
 const props = Astro.props;
 const content = marked.parse(props.content);
 ---
 
+<Debug answer={props} />
+
 <article class="rounded-md border px-4 py-2">
     <header class="mb-2">
-        <div class="flex items-center justify-between text-sm">
+        <section class="flex items-center justify-between text-sm">
             <span class="font-light">
                 {formatDate(new Date(props.published))}{" "}
             </span>
             <span class="text-sm font-thin">
                 {new Date(props.published).toLocaleTimeString()}
             </span>
-        </div>
-        <div class="mt-1">
+        </section>
+        <section class="mt-1">
             {
                 props &&
                     props.expand.tags &&
-                    props.expand.tags.map(
+                    props?.expand.tags.map(
                         (tag: any) =>
                             tag && <span class="text-sm">#{tag.name} </span>,
                     )
             }
-        </div>
+        </section>
     </header>
     <main set:html={content} />
 </article>
