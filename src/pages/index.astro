@@ -3,8 +3,6 @@ import Layout from "@/layouts/Layout.astro";
 import LinkButton from "@/components/link-button";
 import { getCollection } from "astro:content";
 import PostItem from "@/components/post-item";
-import { Image } from "astro:assets";
-import logo from "@/assets/logo.svg";
 
 const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
 allPosts.sort(
@@ -43,13 +41,6 @@ const last3Projects = allProjects.slice(0, 3);
                     Take a seat, drink some tea, and enjoy your stay.
                 </p>
             </div>
-            <Image
-                src={logo}
-                width={160}
-                height={160}
-                alt="juancmandev logo"
-                class="w-40 h-40 aspect-square"
-            />
         </section>
         <section>
             <h2 class="text-3xl">Latest posts</h2>
