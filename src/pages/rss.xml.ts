@@ -117,7 +117,10 @@ export async function GET(context: any) {
   return rss({
     title: "juancmandev",
     description: "Welcome to my domain, stranger.",
-    customData: `<language>en-us</language>`,
+    customData: `<language>en-us</language><image>
+        <url>https://juancman.dev/logo.png</url>
+        <title>juancmandev</title>
+    </image>`,
     site: context.site,
     items,
     trailingSlash: false,
