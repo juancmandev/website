@@ -35,7 +35,6 @@ export async function GET(context: any) {
 
     for await (const img of images) {
       const src = img.getAttribute("src")!;
-      console.log(src);
 
       if (src.startsWith("@/")) {
         const prefixRemoved = src.replace("@/", "");
@@ -111,8 +110,6 @@ export async function GET(context: any) {
       }),
     });
   }
-
-  console.log(items);
 
   return rss({
     title: "juancmandev",

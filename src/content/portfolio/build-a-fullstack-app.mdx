@@ -753,7 +753,6 @@ export default function EditPost(props: TPostProps) {
         }),
       });
       const json = await res.json();
-      console.log(json);
 
       if (!res.ok) {
         toast(json.message);
