@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
-    "@astrojs/mdx": "^3.1.1",
+    "@astrojs/mdx": "^3.1.2",
     "@astrojs/react": "^3.6.0",
     "@astrojs/rss": "^4.0.7",
     "@astrojs/tailwind": "^5.1.0",
@@ -22,7 +22,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "astro": "^4.11.0",
+    "astro": "^4.11.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "fast-glob": "^3.3.2",
