@@ -61,7 +61,6 @@ export async function GET(context: any) {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
-      author: post.data.author,
       link: `/blog/${post.slug}/`,
       content: sanitizeHtml(html.toString(), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
@@ -103,7 +102,6 @@ export async function GET(context: any) {
       title: project.data.title,
       pubDate: project.data.date,
       description: project.data.description,
-      author: project.data.author,
       link: `/portfolio/${project.slug}/`,
       content: sanitizeHtml(html.toString(), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
@@ -112,18 +110,19 @@ export async function GET(context: any) {
   }
 
   return rss({
+    xmlns: { atom: "http://www.w3.org/2005/Atom" },
     title: "juancmandev",
     description: "Welcome to my domain, stranger.",
+    site: context.site,
     customData: [
       "<language>en-us</language>",
-      `
-      <image>
-          <url>https://juancman.dev/logo.png</url>
+      `<image>
+          <url>https://www.juancman.dev/logo.png</url>
           <title>juancmandev</title>
-          <link>https://juancman.dev</link>
+          <link>https://www.juancman.dev</link>
       </image>`,
+      `<atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml"/>`,
     ].join(""),
-    site: context.site,
     items,
     trailingSlash: false,
   });
