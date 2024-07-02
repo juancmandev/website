@@ -17,32 +17,28 @@ sortContentByDate(allProjects);
 const last3Projects = allProjects.slice(0, 3);
 ---
 
-<Layout title="juancmandev" description="Welcome to my domain, stranger.">
-    <div class="space-y-16">
-        <section class="flex flex-col items-start gap-5">
-            <div class="space-y-1">
-                <h1 class="text-3xl font-bold text-primary">
-                    Welcome to my domain, stranger.
-                </h1>
-                <h2 class="text-xl">
-                    I am <span class="font-semibold text-primary"
-                        >juancmandev</span
-                    >.
-                </h2>
-                <p class="text-lg font-light">
-                    I like computers, and all stuff related to technology.
-                </p>
-                <p class="text-lg font-light">
-                    Take a seat, drink some tea, and enjoy your stay.
-                </p>
-            </div>
-        </section>
+<Layout
+    title="juancmandev"
+    description="Welcome to my domain, stranger. I am juancmandev, web developer, Linux enthusiast, and privacy defender."
+>
+    <div class="prose prose-invert">
+        <h1 class="text-primary">Welcome to my domain, stranger.</h1>
+        <p>
+            I am <span class="font-semibold text-primary">juancmandev</span>, <strong
+                >Web Developer</strong
+            >, <strong>Linux</strong> enthusiast, and <strong>privacy</strong> defender.
+        </p>
+        <p>
+            This is my <strong>website</strong>, a piece of the Internet that I
+            could call my <strong>home base</strong>. Here, I share my knowledge
+            about my career and talk about other topics.
+        </p>
         <section>
-            <h2 class="text-3xl">Latest posts</h2>
-            <ul class="mt-4 flex flex-col gap-4">
+            <h2>Latest posts</h2>
+            <ul class="mt-0 p-0 list-none">
                 {
                     last3Blogs.map((blogpost: any) => (
-                        <li>
+                        <li class="p-0">
                             <PostItem
                                 type="blog"
                                 slug={blogpost.slug}
@@ -53,16 +49,18 @@ const last3Projects = allProjects.slice(0, 3);
                     ))
                 }
             </ul>
-            <LinkButton variant="secondary" href="/blog" className="mt-8"
-                >More posts</LinkButton
+            <LinkButton
+                variant="secondary"
+                href="/blog"
+                className="no-underline">More posts</LinkButton
             >
         </section>
         <section>
-            <h2 class="text-3xl">Latest projects</h2>
-            <ul class="mt-4 flex flex-col gap-4">
+            <h2>Latest projects</h2>
+            <ul class="mt-0 p-0 list-none">
                 {
                     last3Projects.map((project: any) => (
-                        <li>
+                        <li class="p-0">
                             <PostItem
                                 type="portfolio"
                                 slug={project.slug}
@@ -73,8 +71,10 @@ const last3Projects = allProjects.slice(0, 3);
                     ))
                 }
             </ul>
-            <LinkButton variant="secondary" href="/portfolio" className="mt-8"
-                >More projects</LinkButton
+            <LinkButton
+                variant="secondary"
+                href="/portfolio"
+                className="no-underline">More projects</LinkButton
             >
         </section>
     </div>
