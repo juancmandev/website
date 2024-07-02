@@ -114,10 +114,12 @@ export async function GET(context: any) {
   return rss({
     title: "juancmandev",
     description: "Welcome to my domain, stranger.",
-    customData: `<language>en-us</language><image>
-        <url>https://juancman.dev/logo.png</url>
-        <title>juancmandev</title>
-    </image>`,
+    customData: [
+      "<language>en-us</language>",
+      `<media:content medium="image" width="600" url="${context.site}/logo.png" type="avif" />`,
+      `<atom:link href="${new URL("rss.xml", context.site)}" rel="self" type="application/rss+xml" />`,
+      ,
+    ].join(""),
     site: context.site,
     items,
     trailingSlash: false,
