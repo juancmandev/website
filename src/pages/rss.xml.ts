@@ -116,9 +116,12 @@ export async function GET(context: any) {
     description: "Welcome to my domain, stranger.",
     customData: [
       "<language>en-us</language>",
-      `<media:content medium="image" width="600" url="${context.site}/logo.png" type="avif" />`,
-      `<atom:link href="${new URL("rss.xml", context.site)}" rel="self" type="application/rss+xml" />`,
-      ,
+      `
+      <image>
+          <url>https://juancman.dev/logo.png</url>
+          <title>juancmandev</title>
+          <link>https://juancman.dev</link>
+      </image>`,
     ].join(""),
     site: context.site,
     items,
