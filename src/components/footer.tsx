@@ -4,7 +4,7 @@ import formatDate from "@/utils/format-date";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-secondary px-6 py-10 text-center text-sm md:px-16 prose prose-invert">
+    <footer className="border-t border-secondary px-4 py-12 text-center text-sm md:px-16 prose prose-invert min-w-full">
       <section>
         <p>
           Developed by{" "}
