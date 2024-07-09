@@ -5,7 +5,8 @@ on:
     branches:
       - main
 
-env: SECRET_POCKETBASE_API_URL=${{ vars.SECRET_POCKETBASE_API_URL }}
+env:
+  SECRET_POCKETBASE_API_URL: ${{ vars.SECRET_POCKETBASE_API_URL }}
 
 jobs:
   build:
