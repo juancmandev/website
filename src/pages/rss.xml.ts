@@ -117,9 +117,9 @@ export async function GET(context: any) {
     customData: [
       "<language>en-us</language>",
       `<image>
-          <url>https://www.juancman.dev/logo.png</url>
+          <url>https://juancman.dev/logo.png</url>
           <title>juancmandev</title>
-          <link>https://www.juancman.dev</link>
+          <link>https://juancman.dev</link>
       </image>`,
       `<atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml"/>`,
     ].join(""),

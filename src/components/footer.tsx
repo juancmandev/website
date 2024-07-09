@@ -43,7 +43,7 @@ export default function Footer() {
           variant="link"
           className="flex flex-col justify-center"
         >
-          <a target="_blank" href="https://www.juancman.dev/rss.xml">
+          <a target="_blank" href="https://juancman.dev/rss.xml">
             <RssIcon className="w-6" />
             RSS feed
           </a>
