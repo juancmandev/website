@@ -21,6 +21,6 @@ jobs:
       - name: Build project
         uses: pnpm/action-setup@v3
         with:
-          node-version: 20.x
+          version: 9
       - run: pnpm install
       - run: pnpm run build
