@@ -11,11 +11,11 @@ jobs:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          port: ${{ secrets.PORT }}
           script: |
+            mkdir -p ~/.ssh
+            echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }}
             cd ~/apps/website
             git pull origin main
             pnpm run install
