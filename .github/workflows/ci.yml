@@ -13,8 +13,10 @@ jobs:
       - name: git-checkout
         uses: actions/checkout@v3
 
-      - name: pnpm-setup
-        uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
       - name: Build project
         uses: pnpm/action-setup@v2
