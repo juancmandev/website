@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+env: SECRET_POCKETBASE_API_URL=${{ vars.SECRET_POCKETBASE_API_URL }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
