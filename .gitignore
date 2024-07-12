@@ -25,3 +25,5 @@ pnpm-debug.log*
 .vercel
 
 vars.txt
+
+pb/pb_data

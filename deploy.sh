@@ -2,4 +2,6 @@
 
 source ./vars.txt
 
-pnpm run build && scp -i ${SSH_KEY} -r ./dist/* ${USER}@${HOST}:${DIR}
+sudo ./pb/pocketbase serve &
+pnpm run build
+scp -i ${SSH_KEY} -r ./dist/* ${USER}@${HOST}:${DIR}
