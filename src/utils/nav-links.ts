@@ -13,6 +13,10 @@ export const navItems: TNavItem[] = [
     to: "/portfolio",
   },
   {
+    label: "Videos",
+    to: "/videos",
+  },
+  {
     label: "Microblog",
     to: "/microblog",
   },
@@ -20,10 +24,6 @@ export const navItems: TNavItem[] = [
     label: "Resources",
     to: "/resources",
   },
-  // {
-  //   label: "Videos",
-  //   to: "/videos",
-  // },
   {
     label: "About",
     to: "/about",

@@ -4,30 +4,35 @@ import Layout from "@/layouts/Layout.astro";
 import { sortContentByDate } from "@/utils/sorts";
 import { getCollection } from "astro:content";
 
+const pageData = {
+  title: "Portfolio",
+  description: "Check my projects.",
+};
+
 const allProjects = await getCollection(
-    "portfolio",
-    ({ data }) => data.draft !== true,
+  "portfolio",
+  ({ data }) => data.draft !== true
 );
 sortContentByDate(allProjects);
 ---
 
-<Layout title="Blog" description="Long format about thoughts and other topics.">
-    <section class="prose prose-invert">
-        <h1>Portfolio</h1>
-        <p>Check my projects.</p>
-    </section>
-    <ul class="mt-4 flex flex-col gap-4">
-        {
-            allProjects.map((project: any) => (
-                <li>
-                    <PostItem
-                        type="portfolio"
-                        slug={project.slug}
-                        date={project.data.date!}
-                        title={project.data.title!}
-                    />
-                </li>
-            ))
-        }
-    </ul>
+<Layout {...pageData}>
+  <section class="prose prose-invert">
+    <h1>{pageData.title}</h1>
+    <p>{pageData.description}</p>
+  </section>
+  <ul class="mt-4 flex flex-col gap-4">
+    {
+      allProjects.map((project: any) => (
+        <li>
+          <PostItem
+            type="portfolio"
+            slug={project.slug}
+            date={project.data.date!}
+            title={project.data.title!}
+          />
+        </li>
+      ))
+    }
+  </ul>
 </Layout>

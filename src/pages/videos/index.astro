@@ -5,28 +5,31 @@ import { sortContentByDate } from "@/utils/sorts";
 import { getCollection } from "astro:content";
 
 const pageData = {
-  title: "Blog",
-  description: "Long format about thoughts and other topics.",
+  title: "Videos",
+  description: "Guiones de los videos de mi canal de YouTube.",
 };
 
-const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
-sortContentByDate(allPosts);
+const allVideos = await getCollection(
+  "videos",
+  ({ data }) => data.draft !== true
+);
+sortContentByDate(allVideos);
 ---
 
-<Layout {...pageData}>
+<Layout {...pageData} lang="es">
   <section class="prose prose-invert">
     <h1>{pageData.title}</h1>
     <p>{pageData.description}</p>
   </section>
   <ul class="mt-4 flex flex-col gap-4">
     {
-      allPosts.map((blogpost: any) => (
+      allVideos.map((video: any) => (
         <li>
           <PostItem
-            type="blog"
-            slug={blogpost.slug}
-            date={blogpost.data.date!}
-            title={blogpost.data.title!}
+            type="videos"
+            slug={video.slug}
+            date={video.data.date!}
+            title={video.data.title!}
           />
         </li>
       ))
