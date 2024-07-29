@@ -5,16 +5,16 @@ const { src, alt } = Astro.props;
 ---
 
 <Image
-    id="img"
-    src={src}
-    alt={alt}
-    width={1092}
-    height={986}
-    class=".markdown-image w-auto h-auto rounded-md aspect-auto"
+  id="img"
+  src={src}
+  alt={alt}
+  width={1092}
+  height={986}
+  class=".markdown-image w-auto h-auto rounded-md aspect-auto"
 />
 
 <script>
-    const image = document.getElementById("img")!;
+  const image = document.getElementById("img")!;
 
-    image.setAttribute("loading", "eager");
+  image && image.setAttribute("loading", "eager");
 </script>

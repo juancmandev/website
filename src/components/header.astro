@@ -1,0 +1,42 @@
+---
+import logo from "@/assets/logo.png";
+import { Image } from "astro:assets";
+import LinkButton from "@/components/link-button";
+import { ChevronUp, Compass } from "lucide-react";
+---
+
+<header
+  class="py-2 fixed top-0 z-50 flex w-full items-center justify-between border-b border-secondary backdrop-blur-lg"
+>
+  <div
+    class="px-4 sm:px-0 flex w-full max-w-[65ch] items-center justify-between mx-auto"
+  >
+    <section class="flex max-w-max">
+      <LinkButton
+        href="/"
+        size="icon"
+        variant="link"
+        className="rounded-full px-0"
+      >
+        <Image
+          src={logo}
+          width={80}
+          height={80}
+          loading="eager"
+          class="w-auto h-auto"
+          alt="juancmandev logo"
+        />
+      </LinkButton>
+    </section>
+    <section class="flex items-center gap-4">
+      <LinkButton variant="link" className="p-0 gap-1" href="#">
+        <ChevronUp className="w-5" />
+        Top
+      </LinkButton>
+      <LinkButton variant="link" className="p-0 gap-1" href="#navigation">
+        <Compass className="w-5" />
+        Navigation
+      </LinkButton>
+    </section>
+  </div>
+</header>
