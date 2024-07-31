@@ -1,20 +1,20 @@
 ---
 import Header from "@/components/header.astro";
-import Navigation from "@/components/ navigation";
+import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import "@/styles/globals.css";
 
 interface Props {
   title: string;
   description: string;
-  lang?: string;
+  lang: "en" | "es";
 }
 
 const { title, description, lang } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={lang || "en"}>
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -37,11 +37,11 @@ const { title, description, lang } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Header />
-    <main class="px-4 sm:px-0 max-w-[65ch] pt-28 pb-14 mx-auto">
+    <Header lang={lang} />
+    <main class="px-4 sm:px-0 max-w-[65ch] pt-28 pb-5 mx-auto">
       <slot />
     </main>
-    <Navigation />
-    <Footer />
+    <Navigation lang={lang} />
+    <Footer lang={lang} />
   </body>
 </html>

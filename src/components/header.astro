@@ -3,6 +3,27 @@ import logo from "@/assets/logo.png";
 import { Image } from "astro:assets";
 import LinkButton from "@/components/link-button";
 import { ChevronUp, Compass } from "lucide-react";
+
+type Props = {
+  lang: "en" | "es";
+};
+
+const locales = {
+  en: {
+    to: "/es",
+    switch_language: "🇲🇽",
+    top: "Top",
+    navigation: "Navigation",
+  },
+  es: {
+    to: "/",
+    switch_language: "🇺🇸",
+    top: "Arriba",
+    navigation: "Navevación",
+  },
+} as const;
+
+const { lang } = Astro.props;
 ---
 
 <header
@@ -28,14 +49,21 @@ import { ChevronUp, Compass } from "lucide-react";
         />
       </LinkButton>
     </section>
-    <section class="flex items-center gap-4">
-      <LinkButton variant="link" className="p-0 gap-1" href="#">
-        <ChevronUp className="w-5" />
-        Top
+    <section class="flex items-center gap-2">
+      <LinkButton
+        variant="link"
+        href={locales[lang].to}
+        className="p-0 gap-1 text-base"
+      >
+        {locales[lang].switch_language}
       </LinkButton>
-      <LinkButton variant="link" className="p-0 gap-1" href="#navigation">
+      <LinkButton variant="link" className="p-0 gap-0.5" href="#">
+        <ChevronUp className="w-5" />
+        {locales[lang].top}
+      </LinkButton>
+      <LinkButton variant="link" className="p-0 gap-0.5" href="#navigation">
         <Compass className="w-5" />
-        Navigation
+        {locales[lang].navigation}
       </LinkButton>
     </section>
   </div>

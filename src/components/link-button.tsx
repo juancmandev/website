@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 
 type Props = {
   children: React.ReactNode;
+  title?: string;
   href: string;
   variant?:
     | "default"
@@ -21,6 +22,7 @@ export default function LinkButton(props: Props) {
     <Button
       asChild
       size={props.size}
+      title={props.title}
       variant={props.variant}
       className={props.className}
     >

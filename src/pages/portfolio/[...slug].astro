@@ -6,33 +6,37 @@ import components from "@/components/mdx/wrapper";
 import formatDate from "@/utils/format-date";
 
 interface Props {
-    project: CollectionEntry<"portfolio">;
+  project: CollectionEntry<"portfolio">;
 }
 
 export async function getStaticPaths() {
-    const allProjects = await getCollection(
-        "portfolio",
-        ({ data }) => data.draft !== true,
-    );
+  const allProjects = await getCollection(
+    "portfolio",
+    ({ data }) => data.draft !== true
+  );
 
-    return allProjects.map((project) => ({
-        params: { slug: project.slug },
-        props: { project },
-    }));
+  return allProjects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
 }
 
 const { project } = Astro.props;
 const { Content } = await project.render();
 ---
 
-<Layout title={project.data.title} description={project.data.description}>
-    <article class="prose prose-invert">
-        <h1>{project.data.title}</h1>
-        <Content components={{ ...components }} />
-        <hr />
-        <p>
-            <strong>Posted: </strong>
-            {project.data.date && formatDate(new Date(project.data.date))}
-        </p>
-    </article>
+<Layout
+  lang="en"
+  title={project.data.title}
+  description={project.data.description}
+>
+  <article class="prose prose-invert">
+    <h1>{project.data.title}</h1>
+    <Content components={{ ...components }} />
+    <hr />
+    <p>
+      <strong>Posted: </strong>
+      {project.data.date && formatDate(new Date(project.data.date))}
+    </p>
+  </article>
 </Layout>

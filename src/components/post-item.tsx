@@ -5,7 +5,7 @@ type Props = {
   slug: string;
   date: Date | string;
   title: string;
-  type: "blog" | "portfolio" | "videos";
+  type: "blog" | "portfolio" | "es/videos";
 };
 
 export default function PostItem(props: Props) {

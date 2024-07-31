@@ -2,7 +2,11 @@ import { Code, RssIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import formatDate from "@/utils/format-date";
 
-export default function Footer() {
+type Props = {
+  lang: "en" | "es";
+};
+
+export default function Footer(props: Props) {
   return (
     <footer className="border-t border-secondary px-4 py-12 text-center text-sm md:px-16 prose prose-invert min-w-full">
       <section>

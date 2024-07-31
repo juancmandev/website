@@ -10,72 +10,69 @@ sortContentByDate(allPosts);
 const last3Blogs = allPosts.slice(0, 3);
 
 const allProjects = await getCollection(
-    "portfolio",
-    ({ data }) => data.draft !== true,
+  "portfolio",
+  ({ data }) => data.draft !== true
 );
 sortContentByDate(allProjects);
 const last3Projects = allProjects.slice(0, 3);
 ---
 
 <Layout
-    title="juancmandev"
-    description="Welcome to my domain, stranger. I am juancmandev; Web Developer, Linux enthusiast, and privacy defender."
+  lang="en"
+  title="juancmandev"
+  description="Welcome to my domain, stranger. I am juancmandev; Web Developer, Linux enthusiast, and privacy defender."
 >
-    <div class="prose prose-invert">
-        <h1 class="text-primary">Welcome to my domain, stranger.</h1>
-        <p>
-            I am <strong class="text-primary">juancmandev</strong>; <strong
-                >Web Developer</strong
-            >, <strong>Linux</strong> enthusiast, and <strong>privacy</strong> defender.
-        </p>
-        <p>
-            This is my <strong>website</strong>, a piece of the Internet that I
-            could call my <strong>home base</strong>. Here, I share my knowledge
-            about my career and talk about other topics.
-        </p>
-        <section>
-            <h2>Latest posts</h2>
-            <ul class="mt-0 p-0 list-none">
-                {
-                    last3Blogs.map((blogpost: any) => (
-                        <li class="p-0">
-                            <PostItem
-                                type="blog"
-                                slug={blogpost.slug}
-                                date={blogpost.data.date!}
-                                title={blogpost.data.title!}
-                            />
-                        </li>
-                    ))
-                }
-            </ul>
-            <LinkButton
-                variant="secondary"
-                href="/blog"
-                className="no-underline">More posts</LinkButton
-            >
-        </section>
-        <section>
-            <h2>Latest projects</h2>
-            <ul class="mt-0 p-0 list-none">
-                {
-                    last3Projects.map((project: any) => (
-                        <li class="p-0">
-                            <PostItem
-                                type="portfolio"
-                                slug={project.slug}
-                                date={project.data.date!}
-                                title={project.data.title!}
-                            />
-                        </li>
-                    ))
-                }
-            </ul>
-            <LinkButton
-                variant="secondary"
-                href="/portfolio"
-                className="no-underline">More projects</LinkButton
-            >
-        </section>
-    </div>
+  <div class="prose prose-invert">
+    <h1 class="text-primary">Welcome to my domain, stranger.</h1>
+    <p>
+      I am <strong class="text-primary">juancmandev</strong>; <strong
+        >Web Developer</strong
+      >, <strong>Linux</strong> enthusiast, and <strong>privacy</strong> defender.
+    </p>
+    <p>
+      This is my <strong>website</strong>, a piece of the Internet that I could
+      call my <strong>home base</strong>. Here, I share my passion about open
+      source projects and other topics.
+    </p>
+    <section>
+      <h2>Latest posts</h2>
+      <ul class="mt-0 p-0 list-none">
+        {
+          last3Blogs.map((blogpost: any) => (
+            <li class="p-0">
+              <PostItem
+                type="blog"
+                slug={blogpost.slug}
+                date={blogpost.data.date!}
+                title={blogpost.data.title!}
+              />
+            </li>
+          ))
+        }
+      </ul>
+      <LinkButton variant="secondary" href="/blog" className="no-underline"
+        >More posts</LinkButton
+      >
+    </section>
+    <section>
+      <h2>Latest projects</h2>
+      <ul class="mt-0 p-0 list-none">
+        {
+          last3Projects.map((project: any) => (
+            <li class="p-0">
+              <PostItem
+                type="portfolio"
+                slug={project.slug}
+                date={project.data.date!}
+                title={project.data.title!}
+              />
+            </li>
+          ))
+        }
+      </ul>
+      <LinkButton variant="secondary" href="/portfolio" className="no-underline"
+        >More projects</LinkButton
+      >
+    </section>
+  </div>
 </Layout>

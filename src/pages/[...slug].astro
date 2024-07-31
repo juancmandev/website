@@ -5,24 +5,24 @@ import type { CollectionEntry } from "astro:content";
 import components from "@/components/mdx/wrapper";
 
 interface Props {
-    page: CollectionEntry<"pages">;
+  page: CollectionEntry<"pages">;
 }
 
 export async function getStaticPaths() {
-    const allPages = await getCollection("pages");
+  const allPages = await getCollection("pages");
 
-    return allPages.map((page: CollectionEntry<"pages">) => ({
-        params: { slug: page.slug },
-        props: { page },
-    }));
+  return allPages.map((page: CollectionEntry<"pages">) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
 }
 
 const { page } = Astro.props;
 const { Content } = await page.render();
 ---
 
-<Layout title={page.data.title} description={page.data.description}>
-    <article class="prose prose-invert">
-        <Content components={{ ...components }} />
-    </article>
+<Layout lang="en" title={page.data.title} description={page.data.description}>
+  <article class="prose prose-invert">
+    <Content components={{ ...components }} />
+  </article>
 </Layout>

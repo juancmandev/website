@@ -6,33 +6,33 @@ import components from "@/components/mdx/wrapper";
 import formatDate from "@/utils/format-date";
 
 interface Props {
-    post: CollectionEntry<"blog">;
+  post: CollectionEntry<"blog">;
 }
 
 export async function getStaticPaths() {
-    const allBlogPosts = await getCollection(
-        "blog",
-        ({ data }) => data.draft !== true,
-    );
+  const allBlogPosts = await getCollection(
+    "blog",
+    ({ data }) => data.draft !== true
+  );
 
-    return allBlogPosts.map((post) => ({
-        params: { slug: post.slug },
-        props: { post },
-    }));
+  return allBlogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
 
 const { post } = Astro.props;
 const { Content } = await post.render();
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-    <article class="prose prose-invert">
-        <h1>{post.data.title}</h1>
-        <Content components={{ ...components }} />
-        <hr />
-        <p>
-            <strong>Posted: </strong>
-            {post.data.date && formatDate(new Date(post.data.date))}
-        </p>
-    </article>
+<Layout lang="en" title={post.data.title} description={post.data.description}>
+  <article class="prose prose-invert">
+    <h1>{post.data.title}</h1>
+    <Content components={{ ...components }} />
+    <hr />
+    <p>
+      <strong>Posted: </strong>
+      {post.data.date && formatDate(new Date(post.data.date))}
+    </p>
+  </article>
 </Layout>

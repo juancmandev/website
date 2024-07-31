@@ -34,7 +34,7 @@ export const navItems: TNavItem[] = [
     ),
   },
   {
-    to: "/videos",
+    to: "es/videos",
     child: (
       <>
         <MonitorPlay />
@@ -80,9 +80,13 @@ export const navItems: TNavItem[] = [
   },
 ];
 
-export default function Navigation() {
+type Props = {
+  lang: "en" | "es";
+};
+
+export default function Navigation(props: Props) {
   return (
-    <nav className="px-4 sm:px-0 max-w-[65ch] mx-auto prose prose-invert py-20">
+    <nav className="px-4 sm:px-0 max-w-[65ch] mx-auto prose prose-invert pt-5 pb-20">
       <h2 id="navigation">Navigation</h2>
       <ul className="list-none p-0 flex flex-wrap gap-4">
         {navItems.map((navItem, index) => (
