@@ -1,9 +1,9 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
 import components from "@/components/mdx/wrapper";
 import formatDate from "@/utils/format-date";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
   project: CollectionEntry<"videos">;

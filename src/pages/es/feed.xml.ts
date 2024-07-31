@@ -10,10 +10,10 @@ import type { ImageMetadata } from "astro";
 const markdownParser = new MarkdownIt();
 
 const imagesBlog = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/blog/**/**/*.{jpeg,jpg,png,gif,webp}",
+  "/src/assets/blog/**/**/*.{jpeg,jpg,png,gif,webp}"
 );
 const imagesPortfolio = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/portfolio/**/**/*.{jpeg,jpg,png,gif,webp}",
+  "/src/assets/portfolio/**/**/*.{jpeg,jpg,png,gif,webp}"
 );
 
 export async function GET(context: any) {
@@ -21,14 +21,25 @@ export async function GET(context: any) {
 
   const blog = await getCollection(
     "blog",
-    ({ data }) => data.draft !== true && data.rss === true,
+    ({ data }) => data.draft !== true && data.rss === true
   );
+  const filterBlog = blog.filter((post) => {
+    const [lang] = post.slug.split("/");
+
+    return lang === "es" && post;
+  });
+
   const portfolio = await getCollection(
     "portfolio",
-    ({ data }) => data.draft !== true && data.rss === true,
+    ({ data }) => data.draft !== true && data.rss === true
   );
+  const filterPortfolio = portfolio.filter((project) => {
+    const [lang] = project.slug.split("/");
 
-  for await (const post of blog) {
+    return lang === "es" && project;
+  });
+
+  for await (const post of filterBlog) {
     const body = markdownParser.render(post.body);
     const html = htmlParser.parse(body);
     const images = html.querySelectorAll("img");
@@ -40,14 +51,14 @@ export async function GET(context: any) {
         const prefixRemoved = src.replace("@/", "");
         const imagePathPrefix = `/src/${prefixRemoved}`;
         const imagePath = await imagesBlog[imagePathPrefix]?.()?.then(
-          (res: any) => res.default,
+          (res: any) => res.default
         );
 
         if (imagePath) {
           const optimizedImg = await getImage({ src: imagePath });
           img.setAttribute(
             "src",
-            context.site + optimizedImg.src.replace("/", ""),
+            context.site + optimizedImg.src.replace("/", "")
           );
         }
       } else if (src.startsWith("/images")) {
@@ -68,7 +79,7 @@ export async function GET(context: any) {
     });
   }
 
-  for await (const project of portfolio) {
+  for await (const project of filterPortfolio) {
     const body = markdownParser.render(project.body);
     const html = htmlParser.parse(body);
     const images = html.querySelectorAll("img");
@@ -80,14 +91,14 @@ export async function GET(context: any) {
         const prefixRemoved = src.replace("@/", "");
         const imagePathPrefix = `/src/${prefixRemoved}`;
         const imagePath = await imagesPortfolio[imagePathPrefix]?.()?.then(
-          (res: any) => res.default,
+          (res: any) => res.default
         );
 
         if (imagePath) {
           const optimizedImg = await getImage({ src: imagePath });
           img.setAttribute(
             "src",
-            context.site + optimizedImg.src.replace("/", ""),
+            context.site + optimizedImg.src.replace("/", "")
           );
         }
       } else if (src.startsWith("/images")) {
