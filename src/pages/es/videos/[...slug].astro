@@ -25,11 +25,7 @@ const { project } = Astro.props;
 const { Content } = await project.render();
 ---
 
-<Layout
-  lang="es"
-  title={project.data.title}
-  description={project.data.description}
->
+<Layout title={project.data.title} description={project.data.description}>
   <article class="prose prose-invert">
     <h1>{project.data.title}</h1>
     <Content components={{ ...components }} />

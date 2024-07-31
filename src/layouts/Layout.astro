@@ -3,17 +3,18 @@ import Header from "@/components/header.astro";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import "@/styles/globals.css";
+import { getLangFromUrl } from "../i18n/utils";
 
 interface Props {
   title: string;
   description: string;
-  lang: "en" | "es";
 }
 
-const { title, description, lang } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const { title, description } = Astro.props;
 ---
 
-<!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
@@ -30,7 +31,13 @@ const { title, description, lang } = Astro.props;
       rel="alternate"
       title="juancmandev"
       type="application/rss+xml"
-      href={new URL("rss.xml", Astro.site)}
+      href={new URL("feed.xml", Astro.site)}
+    />
+    <link
+      rel="alternate"
+      title="juancmandev"
+      type="application/rss+xml"
+      href={new URL("feed.xml", `${Astro.site}/es/`)}
     />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />

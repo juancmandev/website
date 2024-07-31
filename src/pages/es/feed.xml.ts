@@ -112,16 +112,16 @@ export async function GET(context: any) {
   return rss({
     xmlns: { atom: "http://www.w3.org/2005/Atom" },
     title: "juancmandev",
-    description: "Welcome to my domain, stranger.",
-    site: context.site,
+    description: "Bienvenido a mi dominio, extraño.",
+    site: `${context.site}es/`,
     customData: [
-      "<language>en-us</language>",
+      "<language>es-mx</language>",
       `<image>
           <url>https://juancman.dev/logo.png</url>
           <title>juancmandev</title>
           <link>https://juancman.dev</link>
       </image>`,
-      `<atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml"/>`,
+      `<atom:link href="${context.site}es/feed.xml" rel="self" type="application/rss+xml"/>`,
     ].join(""),
     items,
     trailingSlash: false,

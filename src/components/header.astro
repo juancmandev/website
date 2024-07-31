@@ -21,7 +21,7 @@ const locales = {
     top: "Arriba",
     navigation: "Navevación",
   },
-} as const;
+};
 
 const { lang } = Astro.props;
 ---
@@ -34,7 +34,7 @@ const { lang } = Astro.props;
   >
     <section class="flex max-w-max">
       <LinkButton
-        href="/"
+        href={lang === "en" ? "/" : "/es"}
         size="icon"
         variant="link"
         className="rounded-full px-0"

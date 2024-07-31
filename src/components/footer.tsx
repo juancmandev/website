@@ -47,7 +47,14 @@ export default function Footer(props: Props) {
           variant="link"
           className="flex flex-col justify-center"
         >
-          <a target="_blank" href="https://juancman.dev/rss.xml">
+          <a
+            target="_blank"
+            href={
+              props.lang == "en"
+                ? "https://juancman.dev/feed.xml"
+                : "https://juancman.dev/es/feed.xml"
+            }
+          >
             <RssIcon className="w-6" />
             RSS feed
           </a>

@@ -13,7 +13,7 @@ const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
 sortContentByDate(allPosts);
 ---
 
-<Layout {...pageData} lang="en">
+<Layout {...pageData}>
   <section class="prose prose-invert">
     <h1>{pageData.title}</h1>
     <p>{pageData.description}</p>
