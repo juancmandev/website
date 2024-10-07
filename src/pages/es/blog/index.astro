@@ -6,25 +6,22 @@ import { sortContentByDate } from "@/utils/sorts";
 import { getCollection } from "astro:content";
 
 const pageData = {
-    title: "Portfolio",
-    description: "Check my projects.",
+    title: "Blog",
+    description: "Formato largo sobre pensamientos y otros temas.",
 };
 
-const allProjects = await getCollection(
-    "portfolio",
-    ({ data }) => data.draft !== true,
-);
-const allEnProjects = allProjects.map((project) => {
-    const [lang, ...slug] = project.slug.split("/");
+const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+const filterEsPosts = allPosts.map((post) => {
+    const [lang, ...slug] = post.slug.split("/");
 
-    if (lang === "en")
+    if (lang === "es")
         return {
-            ...project,
-            slug: slug,
+            ...post,
+            slug: slug.toString(),
         };
     else null;
 });
-sortContentByDate(allEnProjects);
+sortContentByDate(filterEsPosts);
 
 const lang = getLangFromUrl(Astro.url);
 ---
@@ -36,16 +33,16 @@ const lang = getLangFromUrl(Astro.url);
     </section>
     <ul class="mt-4 flex flex-col gap-4">
         {
-            allEnProjects.map(
-                (project) =>
-                    project && (
+            filterEsPosts.map(
+                (post) =>
+                    post && (
                         <li>
                             <PostItem
+                                type="blog"
                                 lang={lang}
-                                type="portfolio"
-                                slug={project.slug}
-                                date={project.data.date!}
-                                title={project.data.title!}
+                                slug={post?.slug}
+                                date={post?.data.date!}
+                                title={post?.data.title!}
                             />
                         </li>
                     ),

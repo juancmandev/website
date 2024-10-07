@@ -12,12 +12,29 @@ const months = [
   "November",
   "December",
 ];
+const meses = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 
-export default function formatDate(date: Date | string) {
+export default function formatDate(date: Date | string, lang: string) {
   const newDate = new Date(date);
   const month = months[newDate.getMonth()];
+  const mes = meses[newDate.getMonth()];
   const day = newDate.getDate();
   const year = newDate.getFullYear();
 
-  return `${month} ${day}, ${year}`;
+  return lang !== "es"
+    ? `${month} ${day}, ${year}`
+    : `${day} de ${mes} del ${year}`;
 }

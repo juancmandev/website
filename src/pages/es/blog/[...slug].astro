@@ -7,45 +7,45 @@ import type { CollectionEntry } from "astro:content";
 import { getLangFromUrl } from "@/i18n/utils";
 
 interface Props {
-    project: CollectionEntry<"portfolio">;
+    post: CollectionEntry<"blog">;
 }
 
 export async function getStaticPaths() {
-    const allProjects = await getCollection(
-        "portfolio",
+    const allBlogPosts = await getCollection(
+        "blog",
         ({ data }) => data.draft !== true,
     );
-    const filterEnProjects = allProjects.map((project) => {
-        const [lang, ...slug] = project.slug.split("/");
+    const filterEsPosts = allBlogPosts.map((post) => {
+        const [lang, ...slug] = post.slug.split("/");
 
-        if (lang === "en")
+        if (lang === "es")
             return {
-                ...project,
+                ...post,
                 slug: slug.toString(),
             };
         else null;
     });
 
-    return filterEnProjects.map((project) => ({
-        params: { slug: project?.slug },
-        props: { project },
+    return filterEsPosts.map((post) => ({
+        params: { slug: post?.slug },
+        props: { post },
     }));
 }
 
-const { project } = Astro.props;
-const { Content } = await project.render();
+const { post } = Astro.props;
+const { Content } = await post.render();
 
 const lang = getLangFromUrl(Astro.url);
 ---
 
-<Layout title={project.data.title} description={project.data.description}>
+<Layout title={post.data.title} description={post.data.description}>
     <article class="prose prose-invert">
-        <h1>{project.data.title}</h1>
+        <h1>{post.data.title}</h1>
         <Content components={{ ...components }} />
         <hr />
         <p>
-            <strong>Posted: </strong>
-            {project.data.date && formatDate(new Date(project.data.date), lang)}
+            <strong>Publicado: </strong>
+            {post.data.date && formatDate(new Date(post.data.date), lang)}
         </p>
     </article>
 </Layout>

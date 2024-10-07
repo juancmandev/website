@@ -1,24 +1,114 @@
 ---
+import LinkButton from "@/components/link-button";
+import PostItem from "@/components/post-item";
+import { getLangFromUrl } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
+import { sortContentByDate } from "@/utils/sorts";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+const allEsPosts = allPosts.map((post) => {
+    const [lang, ...slug] = post.slug.split("/");
+
+    if (lang === "es")
+        return {
+            ...post,
+            slug: slug.toString(),
+        };
+    else null;
+});
+sortContentByDate(allEsPosts);
+const last3Blogs = allEsPosts.slice(0, 3);
+
+const allProjects = await getCollection(
+    "portfolio",
+    ({ data }) => data.draft !== true,
+);
+const allEnProjects = allProjects.map((project) => {
+    const [lang, ...slug] = project.slug.split("/");
+
+    if (lang === "es")
+        return {
+            ...project,
+            slug: slug.toString(),
+        };
+    else null;
+});
+sortContentByDate(allEnProjects);
+const last3Projects = allEnProjects.slice(0, 3);
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout
-  title="juancmandev"
-  description="Bienvenido a mi dominio, extraño. Soy juancmandev; Desarrollador Web, entusiasta de Linux, y defensor de la privacidad."
+    title="juancmandev"
+    description="Bienvenido a mi dominio, extraño. Soy juancmandev; Desarrollador Web, entusiasta de Linux, y defensor de la privacidad."
 >
-  <div class="prose prose-invert">
-    <h1 class="text-primary">Bienvenido a mi dominio, extraño.</h1>
-    <p>
-      Soy <strong class="text-primary">juancmandev</strong>; <strong
-        >Desarrollador Web</strong
-      >, entusiasta de <strong>Linux</strong> y defensor de la <strong
-        >privacidad.</strong
-      >
-    </p>
-    <p>
-      Este es mi <strong>website</strong>, un pedazo de Internet al que puedo
-      llamar <strong>hogar</strong>. Aquí comparto mi pasión por proyectos open
-      source y otros temas.
-    </p>
-  </div>
+    <div class="prose prose-invert">
+        <h1 class="text-primary">Bienvenido a mi dominio, extraño.</h1>
+        <p>
+            Soy <strong class="text-primary">juancmandev</strong>; <strong
+                >Desarrollador Web</strong
+            >, entusiasta de <strong>Linux</strong> y defensor de la <strong
+                >privacidad.</strong
+            >
+        </p>
+        <p>
+            Este es mi <strong>website</strong>, un pedazo de Internet al que
+            puedo llamar <strong>hogar</strong>. Aquí comparto mi pasión por
+            proyectos open source y otros temas.
+        </p>
+        <section>
+            <h2>Últimos posts</h2>
+            <ul class="mt-0 p-0 list-none">
+                {
+                    last3Blogs.map(
+                        (blogpost) =>
+                            blogpost && (
+                                <li class="p-0">
+                                    <PostItem
+                                        type="blog"
+                                        lang={lang}
+                                        slug={blogpost?.slug}
+                                        date={blogpost.data.date}
+                                        title={blogpost.data.title}
+                                    />
+                                </li>
+                            ),
+                    )
+                }
+            </ul>
+            <LinkButton
+                variant="secondary"
+                href="/blog"
+                className="no-underline">Más posts</LinkButton
+            >
+        </section>
+        <section>
+            <h2>Últimos proyectos</h2>
+            <ul class="mt-0 p-0 list-none">
+                {
+                    last3Projects.map(
+                        (project) =>
+                            project && (
+                                <li class="p-0">
+                                    <PostItem
+                                        lang={lang}
+                                        type="portfolio"
+                                        slug={project.slug}
+                                        date={project.data.date!}
+                                        title={project.data.title!}
+                                    />
+                                </li>
+                            ),
+                    )
+                }
+            </ul>
+            <LinkButton
+                variant="secondary"
+                href="/portfolio"
+                className="no-underline">More projects</LinkButton
+            >
+        </section>
+    </div>
 </Layout>

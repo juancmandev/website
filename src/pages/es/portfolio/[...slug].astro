@@ -18,7 +18,7 @@ export async function getStaticPaths() {
     const filterEnProjects = allProjects.map((project) => {
         const [lang, ...slug] = project.slug.split("/");
 
-        if (lang === "en")
+        if (lang === "es")
             return {
                 ...project,
                 slug: slug.toString(),
@@ -44,7 +44,7 @@ const lang = getLangFromUrl(Astro.url);
         <Content components={{ ...components }} />
         <hr />
         <p>
-            <strong>Posted: </strong>
+            <strong>Publicado: </strong>
             {project.data.date && formatDate(new Date(project.data.date), lang)}
         </p>
     </article>
