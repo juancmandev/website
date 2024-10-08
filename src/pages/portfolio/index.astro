@@ -6,23 +6,23 @@ import { sortContentByDate } from "@/utils/sorts";
 import { getCollection } from "astro:content";
 
 const pageData = {
-    title: "Portfolio",
-    description: "Check my projects.",
+  title: "Portfolio",
+  description: "Check my projects.",
 };
 
 const allProjects = await getCollection(
-    "portfolio",
-    ({ data }) => data.draft !== true,
+  "portfolio",
+  ({ data }) => data.draft !== true,
 );
 const allEnProjects = allProjects.map((project) => {
-    const [lang, ...slug] = project.slug.split("/");
+  const [lang, ...slug] = project.slug.split("/");
 
-    if (lang === "en")
-        return {
-            ...project,
-            slug: slug,
-        };
-    else null;
+  if (lang === "en")
+    return {
+      ...project,
+      slug: slug.toString(),
+    };
+  else null;
 });
 sortContentByDate(allEnProjects);
 
@@ -30,26 +30,26 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
-    <section class="prose prose-invert">
-        <h1>{pageData.title}</h1>
-        <p>{pageData.description}</p>
-    </section>
-    <ul class="mt-4 flex flex-col gap-4">
-        {
-            allEnProjects.map(
-                (project) =>
-                    project && (
-                        <li>
-                            <PostItem
-                                lang={lang}
-                                type="portfolio"
-                                slug={project.slug}
-                                date={project.data.date!}
-                                title={project.data.title!}
-                            />
-                        </li>
-                    ),
-            )
-        }
-    </ul>
+  <section class="prose prose-invert">
+    <h1>{pageData.title}</h1>
+    <p>{pageData.description}</p>
+  </section>
+  <ul class="mt-4 flex flex-col gap-4">
+    {
+      allEnProjects.map(
+        (project) =>
+          project && (
+            <li>
+              <PostItem
+                lang={lang}
+                type="portfolio"
+                slug={project.slug}
+                date={project.data.date!}
+                title={project.data.title!}
+              />
+            </li>
+          ),
+      )
+    }
+  </ul>
 </Layout>

@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import components from "@/components/mdx/wrapper";
 import formatDate from "@/utils/format-date";
 import type { CollectionEntry } from "astro:content";
+import { getLangFromUrl } from "@/i18n/utils";
 
 interface Props {
   project: CollectionEntry<"videos">;
@@ -12,7 +13,7 @@ interface Props {
 export async function getStaticPaths() {
   const allProjects = await getCollection(
     "videos",
-    ({ data }) => data.draft !== true
+    ({ data }) => data.draft !== true,
   );
 
   return allProjects.map((project) => ({
@@ -23,6 +24,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await project.render();
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout title={project.data.title} description={project.data.description}>
@@ -32,7 +35,7 @@ const { Content } = await project.render();
     <hr />
     <p>
       <strong>Posted: </strong>
-      {project.data.date && formatDate(new Date(project.data.date))}
+      {project.data.date && formatDate(new Date(project.data.date), lang)}
     </p>
   </article>
 </Layout>

@@ -1,5 +1,6 @@
 ---
 import PostItem from "@/components/post-item";
+import { getLangFromUrl } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { sortContentByDate } from "@/utils/sorts";
 import { getCollection } from "astro:content";
@@ -11,9 +12,11 @@ const pageData = {
 
 const allVideos = await getCollection(
   "videos",
-  ({ data }) => data.draft !== true
+  ({ data }) => data.draft !== true,
 );
 sortContentByDate(allVideos);
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
@@ -26,6 +29,7 @@ sortContentByDate(allVideos);
       allVideos.map((video: any) => (
         <li>
           <PostItem
+            lang={lang}
             type="es/videos"
             slug={video.slug}
             date={video.data.date!}
