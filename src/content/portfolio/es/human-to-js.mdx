@@ -1,0 +1,49 @@
+---
+title: Human to JS
+description: ¡Traduce lenguaje humano a código JavaScript!
+tags: [ChatGPT, Next.js, JavaScript, Vercel]
+image: /portfolio/human-to-js/banner.png
+imageCaption: Human to JS Banner
+date: 2023-4-14
+author: Juan Manzanero
+rss: true
+---
+
+![Human to JS banner](@/assets/portfolio/human-to-js/banner.png) _Human to JS diagram_
+
+_Este proyecto ha sido archivado._
+
+## Retrospectiva
+
+Siempre estoy buscando crecer mi carrera aprendiendo nuevas tecnologías como buen Ingeniero en Software; sin embargo, eso puede ser peligroso ya que la Ingeniería en Software no es sobre usar el último tech stack, sino de hacer que las cosas ocurran.
+
+## Fuente de inspiración
+
+Estaba revisando Twitter hasta que encontré un tweet de una persona que había creado un **side project** en un fin de semana. Ese proyecto es [SQL Translator](https://www.sqltranslate.app/), una simple UI para escribir un texto describiendo una consulta, entonces obtienes la consulta en código SQL, ¡simple!
+
+[@woiskatring](https://twitter.com/whoiskatrin?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1634973237829599233%7Ctwgr%5Eb49b9d28e6ea7383ef16ea3c8c6040656ff0c944%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fpublish.twitter.com%2F%3Fquery%3Dhttps3A2F2Ftwitter.com2Fwhoiskatrin2Fstatus2F1634973237829599233widget%3DTweet) usó la API de ChatGPT para enviar un prompt escrito por el user, devolviendo una respuesta en SQL dentro de un component para copiar al portapapeles. Eso fue suficiente para obtener la atención merecida por la comunidad. [Tweet link](https://twitter.com/whoiskatrin/status/1634973237829599233))
+
+## Mi idea
+
+> _¿Por qué no una web app para escribir un prompt y genera código JavaScript?_
+
+Así que comencé a construir mi idea usando este tech stack:
+
+- **Next.js**: Framework web para construir la UI y como Next.js provee un directorio API para comunicarte con la API de ChatGPT
+- **MUI**: Para usar los UI components como sistema de diseño
+- **Fromik & Yup**: Para manejar el estado del formulario del prompt y crear esquemas de validación
+- **react-syntax-highlighter**: Para mostrar la respuesta de ChatGPT
+
+Usando todas estas tecnologías construí una UI simple usando el MUI Card component, entonces creé el form donde manejé todos los inputs con Formik, los inputs de tipo text y select son los por defecto de MUI, y para crear el esquema de validación usé Yup para marcar como required aquellos inputs para no enviarlos vacíos.
+
+Con la UI finalizada, comencé a crear el endpoint en el directorio de la API para consumir la API de ChatGPT, tan solo usando un fetch como en el proyecto de [@whoiskatrin](https://twitter.com/whoiskatrin?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1634973237829599233%7Ctwgr%5Eb49b9d28e6ea7383ef16ea3c8c6040656ff0c944%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fpublish.twitter.com%2F%3Fquery%3Dhttps3A2F2Ftwitter.com2Fwhoiskatrin2Fstatus2F1634973237829599233widget%3DTweet). indicando qué modelo de OpenAI utilizar, en este caso _text-davinci-003_, puedes aprender más de los esos modelos [aquí](https://platform.openai.com/docs/api-reference/models/list). Obviamente en la petición envié el prompt del user dentro de un string indicando a ChatGPT que solo me de el código, sin comentarios o resultados adicionales.
+
+## Valor añadido
+
+Sí, hay opciones como GitHub Copilot que resuelven ese problema, y eso es por qué agregué la opción de escoger qué tipo de sintaxis usar, arrow function o simple function.
+
+Añadiré más features, como una opción para TypeScript, y usar una TS Interface para que se use como referencia, ¡pero ahora estoy trabajando en más proyectos!
+
+## Inspirando personas
+
+Lo genial de los side projects is que inspira personas como nosotros, podemos usar nuestras habilidades técnicas que llevan el pan a la mesa para transformar ideas en productos, y productos en comunidades, tal como [@Serudda](https://twitter.com/serudda) habla en este [video](https://www.youtube.com/watch?v=LXgPNdw8avI&t).
