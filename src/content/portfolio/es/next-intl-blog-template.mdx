@@ -1,0 +1,139 @@
+---
+title: Next Intl Blog Template
+description: ¡Comienza tu blog en múltiples idiomas!
+tags: [Next.js, next-intl, tailwindcss]
+image: /portfolio/next-intl-blog-template/banner.png
+imageCaption: Next Intl Blog Template banner
+date: 2023-12-18
+author: Juan Manzanero
+rss: true
+---
+
+![Next Intl Blog Template banner](@/assets/portfolio/next-intl-blog-template/banner.png)
+_Next Intl Blog Template banner_
+
+[GitHub](https://github.com/juancmandev/next-intl-blog-template)
+
+[Website](https://next-intl-blog-template.vercel.app/en)
+
+## Introducción
+
+Recientemente actualicé este website, y como sabrás, es un website con **contenido en Inglés y Español**.
+
+No estoy usando un plugin de traducción, en su lugar escribo cada palabra en ambos idiomas.
+
+Gracias a Next.js y [next-intl](https://next-intl-docs.vercel.app/) puedo lograr esto, renderizando rutas para cada idioma en el website, accediendo a un diccionario que contiene el contenido traducido por mí.
+
+Para los archivos .mdx, creé un directorio para cada idioma, y dentro de esos directorios contiene el contenido en ambos idiomas también.
+
+## Cómo usar
+
+Este template es una extensión de [next-intl](https://next-intl-docs.vercel.app/), revisa la [guía de inicio](https://next-intl-docs.vercel.app/docs/getting-started) para aprender lo básico, el propósito del template es crear un layout simple para futuras personalizaciones.
+
+### Agregar o quitar locales
+
+Puedes agregar o remover locales en el archivo `src/lang/locales.ts`.
+
+```ts title="src/lang/locales.ts"
+export type locales = "en" | "es";
+
+export const localesList: locales[] = ["en", "es"];
+```
+
+Solo agrega o remueve un locale de la constante `locales`, y agrega o remueve el locale de la lista.
+
+El primer item en `localesList` debe ser el locale por default.
+
+La lista es usada para la generación de rutas estáticas en
+`src/app/[locale]/layout.tsx`.
+
+```ts title="src/app/[locale]/layout.tsx"
+import { localesList } from "@/lang/locales";
+
+export function generateStaticParams() {
+  return localesList.map((locale) => ({ locale }));
+}
+```
+
+Recuerda actualizar el matcher en `src/middleware.ts`.
+
+```ts title="src/middleware.ts"
+//...
+
+export const config = {
+  matcher: ["/", "/(en|es)/:path*"],
+};
+```
+
+Y por supuesto, actualiza los archivos `src/lang/[locale].json`.
+
+### Crear contenido
+
+Usa `src/content/[locale]` para crear contenido, en el directorio `/[locale]/` crea un directorio para cada propósito, por ejemplo: `/[locale]/blog`.
+
+Dentro crea el archivo .mdx con un nombre único, el nombre será usado como slug para crear la página estática para ese post.
+
+Para crear una sección de blog, usarás la función _getAllContent_ en tu ruta, por ejemplo: `src/app/[locale]/blog/[slug]/page.tsx`.
+
+```tsx title="src/app/[locale]/blog/[slug]/page.tsx"
+import { Mdx } from "@/components";
+import { TParamsLocale, TPage, TSlugLang } from "@/types";
+import { Metadata } from "next";
+import { getAllContent, getContent } from "@/utils/getContent";
+
+export async function generateStaticParams(
+  props: TParamsLocale,
+): Promise<TSlugLang[]> {
+  const blogs = await getAllContent(props.params.locale, "blog");
+
+  if (!blogs) return [];
+
+  return blogs.map((blog) => ({
+    slug: blog.slug,
+    locale: props.params.locale,
+  }));
+}
+
+//...
+```
+
+Esto creará una página estática para cada post de blog.
+
+Puedes obtener la metadata del archivo `.mdx` también.
+
+```tsx title="src/app/[locale]/blog/[slug]/page.tsx"
+//...
+
+export async function generateMetadata(props: TPage): Promise<Metadata> {
+  const blog = await getContent(props.params.locale, "blog", props.params.slug);
+
+  if (!blog) return {};
+
+  return {
+    title: blog.title,
+    //...
+  };
+}
+
+//...
+```
+
+Entonces, renderiza el contenido usando el componente _Mdx_.
+
+```tsx title="src/app/[locale]/blog/[slug]/page.tsx"
+//...
+
+export default async function Page(props: TPage) {
+  const post = await getContent(props.params.locale, "blog", props.params.slug);
+
+  if (!post) return null;
+
+  return <Mdx code={post.body.code} />;
+}
+```
+
+[Puedes hacer un fork de este template aquí](https://github.com/juancmandev/next-intl-blog-template)
+
+## Contacto
+
+Si te interesa **trabajar juntos** en un website con internacionalización con Next.js, envíame un correo a [contact@juancman.dev](mailto:contact@juancman.dev)

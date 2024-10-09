@@ -2,16 +2,33 @@ import { Code, RssIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import formatDate from "@/utils/format-date";
 
-export default function Footer() {
+const locales = {
+  en: {
+    developed_by: "Developed by",
+    build_handcrafted: "Built handcrafted with",
+    last_build: "Last build",
+  },
+  es: {
+    developed_by: "Desarrollado por",
+    build_handcrafted: "Construido a mano con",
+    last_build: "Última build",
+  },
+};
+
+type Props = {
+  lang: "en" | "es";
+};
+
+export default function Footer(props: Props) {
   return (
     <footer className="border-t border-secondary px-4 py-12 text-center text-sm md:px-16 prose prose-invert min-w-full">
       <section>
         <p>
-          Developed by{" "}
+          {locales[props.lang].developed_by}{" "}
           <strong className="font-bold text-primary">juancmandev</strong>
         </p>
         <p>
-          Built handcrafted with{" "}
+          {locales[props.lang].build_handcrafted}{" "}
           <Button
             asChild
             size={null}
@@ -23,7 +40,10 @@ export default function Footer() {
             </a>
           </Button>
         </p>
-        <p>Last built {formatDate(new Date())}.</p>
+        <p>
+          {locales[props.lang].last_build}: {formatDate(new Date(), props.lang)}
+          .
+        </p>
       </section>
       <section className="w-max mx-auto flex items-center gap-12">
         <Button
@@ -43,7 +63,14 @@ export default function Footer() {
           variant="link"
           className="flex flex-col justify-center"
         >
-          <a target="_blank" href="https://juancman.dev/rss.xml">
+          <a
+            target="_blank"
+            href={
+              props.lang == "en"
+                ? "https://juancman.dev/feed.xml"
+                : "https://juancman.dev/es/feed.xml"
+            }
+          >
             <RssIcon className="w-6" />
             RSS feed
           </a>

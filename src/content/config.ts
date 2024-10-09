@@ -30,8 +30,14 @@ const pages = defineCollection({
   }),
 });
 
+const videos = defineCollection({
+  type: "content",
+  schema: contentSchema
+})
+
 export const collections = {
   blog,
   portfolio,
   pages,
+  videos
 };

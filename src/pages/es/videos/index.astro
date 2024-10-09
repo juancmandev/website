@@ -1,0 +1,42 @@
+---
+import PostItem from "@/components/post-item";
+import { getLangFromUrl } from "@/i18n/utils";
+import Layout from "@/layouts/Layout.astro";
+import { sortContentByDate } from "@/utils/sorts";
+import { getCollection } from "astro:content";
+
+const pageData = {
+  title: "Videos",
+  description: "Guiones de los videos de mi canal de YouTube.",
+};
+
+const allVideos = await getCollection(
+  "videos",
+  ({ data }) => data.draft !== true,
+);
+sortContentByDate(allVideos);
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<Layout {...pageData}>
+  <section class="prose prose-invert">
+    <h1>{pageData.title}</h1>
+    <p>{pageData.description}</p>
+  </section>
+  <ul class="mt-4 flex flex-col gap-4">
+    {
+      allVideos.map((video: any) => (
+        <li>
+          <PostItem
+            lang={lang}
+            type="es/videos"
+            slug={video.slug}
+            date={video.data.date!}
+            title={video.data.title!}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</Layout>

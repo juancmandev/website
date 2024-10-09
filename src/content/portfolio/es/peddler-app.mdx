@@ -1,0 +1,54 @@
+---
+title: Peddler App
+description: Escuchas al heladero en su camioneta, intentas alcanzarlo, pero ya está lejos.
+tags: [Tech, SideProject]
+image: /blog/peddler-app/banner.png
+imageCaption: Logo provisional de Peddler App
+date: 2023-12-11
+author: Juan Manzanero
+rss: true
+---
+
+![Logo provisional de Peddler App](@/assets/blog/peddler-app/banner.png) _Logo provisional de Peddler App_
+
+## La idea
+
+Escuchas al heladero en su camioneta, intentas alcanzarlo, pero ya está lejos.
+
+¿Por qué no recibir una notificación en tu celular cuando el heladero está cerca de ti?, así puedes tocar la
+notificación y solicitar al heladero que pase en tu ubicación.
+
+Ese es el propósito de esta app.
+
+## Abrumador para mi
+
+Nunca he desarrollado una app grande por mi mismo, pero quiero intentarlo y ver qué ocurre.
+
+Quiero seguir el camino Indie Hacker, compartiendo en público el progreso, y recibiendo feedback
+de la comunidad.
+
+Este post es el primer paso antes de diseñarlo en Figma o incluso crear la landing page, así que
+quiero escuchar si te interesa, por qué no, o que sería genial para la app.
+
+## Empezando pequeño
+
+Realmente quiero empezar pequeño, lanzando un Minimum Viable Product (MVP), con las siguientes funcionalidades:
+
+- Registro de usuarios y login
+- Dos tipos de usuarios, "peddlers" (vendedores ambulantes) y clientes
+- Peddlers
+  - Si el usuario es peddler (quiere vender), redireccionar al formulario de peddlers
+  - Peddlers pueden crear un perfil con el nombre de su empresa y productos que ofrece, por ejemplo helado, dulces, etc
+  - Una vez que el registro es finalizado, peddlers pueden iniciar rutas
+  - La app obtiene la ubicación del peddler, mostrándolo en el mapa
+  - El backend detectará si el peddler entra en el radio de un cliente, y enviará una notificación push al cliente
+  - Una vez que el peddler tiene una solicitud, la app mostrará la ubicación del cliente solicitante en el mapa
+  - El peddler puede ir a la ubicación, y completar la transacción
+- Clientes
+  - Clientes pueden crear una perfil con su nombre o alias, y registrar ubicaciones, por ejemplo: casa
+  - Una vez que un peddler está cerca, el backend enviará una notificación push al cliente
+  - El cliente toca y confirma la notificación
+
+Por supuesto, clientes pueden cambiar la configuración de las notificaciones, pero esa es la idea core.
+
+Para el MVP no quiero implementar pagos dentro de la app, pero desde luego, podría ser un feature futuro.

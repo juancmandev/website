@@ -1,9 +1,10 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
 import components from "@/components/mdx/wrapper";
 import formatDate from "@/utils/format-date";
+import type { CollectionEntry } from "astro:content";
+import { getLangFromUrl } from "@/i18n/utils";
 
 interface Props {
     post: CollectionEntry<"blog">;
@@ -14,15 +15,27 @@ export async function getStaticPaths() {
         "blog",
         ({ data }) => data.draft !== true,
     );
+    const filterEnPosts = allBlogPosts.map((post) => {
+        const [lang, ...slug] = post.slug.split("/");
 
-    return allBlogPosts.map((post) => ({
-        params: { slug: post.slug },
+        if (lang === "en")
+            return {
+                ...post,
+                slug: slug.toString(),
+            };
+        else null;
+    });
+
+    return filterEnPosts.map((post) => ({
+        params: { slug: post?.slug },
         props: { post },
     }));
 }
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
@@ -32,7 +45,7 @@ const { Content } = await post.render();
         <hr />
         <p>
             <strong>Posted: </strong>
-            {post.data.date && formatDate(new Date(post.data.date))}
+            {post.data.date && formatDate(new Date(post.data.date), lang)}
         </p>
     </article>
 </Layout>
