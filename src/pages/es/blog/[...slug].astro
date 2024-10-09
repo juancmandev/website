@@ -7,29 +7,29 @@ import type { CollectionEntry } from "astro:content";
 import { getLangFromUrl } from "@/i18n/utils";
 
 interface Props {
-    post: CollectionEntry<"blog">;
+  post: CollectionEntry<"blog">;
 }
 
 export async function getStaticPaths() {
-    const allBlogPosts = await getCollection(
-        "blog",
-        ({ data }) => data.draft !== true,
-    );
-    const filterEsPosts = allBlogPosts.map((post) => {
-        const [lang, ...slug] = post.slug.split("/");
+  const allBlogPosts = await getCollection(
+    "blog",
+    ({ data }) => data.draft !== true,
+  );
+  const filterEsPosts = allBlogPosts.map((post) => {
+    const [lang, ...slug] = post.slug.split("/");
 
-        if (lang === "es")
-            return {
-                ...post,
-                slug: slug.toString(),
-            };
-        else null;
-    });
+    if (lang === "es")
+      return {
+        ...post,
+        slug: slug.toString(),
+      };
+    else null;
+  });
 
-    return filterEsPosts.map((post) => ({
-        params: { slug: post?.slug },
-        props: { post },
-    }));
+  return filterEsPosts.map((post) => ({
+    params: { slug: post?.slug },
+    props: { post },
+  }));
 }
 
 const { post } = Astro.props;
@@ -39,13 +39,13 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-    <article class="prose prose-invert">
-        <h1>{post.data.title}</h1>
-        <Content components={{ ...components }} />
-        <hr />
-        <p>
-            <strong>Publicado: </strong>
-            {post.data.date && formatDate(new Date(post.data.date), lang)}
-        </p>
-    </article>
+  <article class="prose prose-invert">
+    <h1>{post.data.title}</h1>
+    <Content components={{ ...components }} />
+    <hr />
+    <p>
+      <strong>Publicado: </strong>
+      {post.data.date && formatDate(new Date(post.data.date), lang)}
+    </p>
+  </article>
 </Layout>
