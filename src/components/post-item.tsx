@@ -5,7 +5,7 @@ type Props = {
   slug: string;
   date: Date | string;
   title: string;
-  type: "blog" | "portfolio" | "es/videos";
+  type: "blog" | "portfolio" | "videos";
   lang: string;
 };
 
