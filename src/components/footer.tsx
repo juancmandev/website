@@ -4,13 +4,13 @@ import formatDate from "@/utils/format-date";
 
 const locales = {
   en: {
-    developed_by: "Developed by",
-    build_handcrafted: "Built handcrafted with",
+    developed_by: "Developed by ",
+    build_handcrafted: "Built handcrafted with ",
     last_build: "Last build",
   },
   es: {
-    developed_by: "Desarrollado por",
-    build_handcrafted: "Construido a mano con",
+    developed_by: "Desarrollado por ",
+    build_handcrafted: "Construido a mano con ",
     last_build: "Última build",
   },
 };
@@ -19,16 +19,21 @@ type Props = {
   lang: "en" | "es";
 };
 
-export default function Footer(props: Props) {
+export default function Footer({ lang }: Props) {
+  const rssUrl =
+    lang == "en"
+      ? "https://juancman.dev/feed.xml"
+      : "https://juancman.dev/es/feed.xml";
+
   return (
     <footer className="border-t border-secondary px-4 py-12 text-center text-sm md:px-16 prose prose-invert min-w-full">
       <section>
         <p>
-          {locales[props.lang].developed_by}{" "}
+          {locales[lang].developed_by}
           <strong className="font-bold text-primary">juancmandev</strong>
         </p>
         <p>
-          {locales[props.lang].build_handcrafted}{" "}
+          {locales[lang].build_handcrafted}
           <Button
             asChild
             size={null}
@@ -41,8 +46,7 @@ export default function Footer(props: Props) {
           </Button>
         </p>
         <p>
-          {locales[props.lang].last_build}: {formatDate(new Date(), props.lang)}
-          .
+          {locales[lang].last_build}: {formatDate(new Date(), lang)}.
         </p>
       </section>
       <section className="w-max mx-auto flex items-center gap-12">
@@ -63,14 +67,7 @@ export default function Footer(props: Props) {
           variant="link"
           className="flex flex-col justify-center"
         >
-          <a
-            target="_blank"
-            href={
-              props.lang == "en"
-                ? "https://juancman.dev/feed.xml"
-                : "https://juancman.dev/es/feed.xml"
-            }
-          >
+          <a target="_blank" href={rssUrl}>
             <RssIcon className="w-6" />
             RSS feed
           </a>
