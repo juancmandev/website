@@ -1,15 +1,15 @@
 ---
 import { Image } from "astro:assets";
 
-const { src, alt } = Astro.props;
+const props = Astro.props;
 ---
 
 <Image
   id="img"
-  src={src}
-  alt={alt}
-  width={1092}
-  height={986}
+  src={props.src}
+  alt={props.alt}
+  width={props.width}
+  height={props.height}
   class="w-auto h-auto rounded-md aspect-auto"
 />
 
