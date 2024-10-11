@@ -3,4 +3,4 @@
 source ./vars.txt
 
 pnpm run build
-scp -i ${SSH_KEY} -r ./dist/* ${USER}@${HOST}:${DIR}
+rsync -rtvzP -e "ssh -i ${SSH_KEY}" dist/ ${USER}@${HOST}:${DIR}
