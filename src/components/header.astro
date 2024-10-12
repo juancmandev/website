@@ -44,7 +44,9 @@ const { lang } = Astro.props;
           width={80}
           height={80}
           loading="eager"
-          class="w-auto h-auto"
+          decoding="sync"
+          fetchpriority="high"
+          class="w-auto h-auto aspect-square"
           alt="juancmandev logo"
         />
       </LinkButton>
