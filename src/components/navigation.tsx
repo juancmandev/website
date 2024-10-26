@@ -8,7 +8,7 @@ import {
   Info,
   Mail,
 } from "lucide-react";
-import { useTranslations } from "@/i18n/utils";
+import { useTranslations, type lang } from "@/i18n/utils";
 
 type TNavItem = {
   type: string;
@@ -44,7 +44,7 @@ export const navItems: TNavItem[] = [
 ];
 
 type Props = {
-  lang: "en" | "es";
+  lang: lang;
 };
 
 export default function Navigation(props: Props) {

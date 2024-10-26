@@ -3,9 +3,10 @@ import logo from "@/assets/logo.png";
 import { Image } from "astro:assets";
 import LinkButton from "@/components/link-button";
 import { ChevronUp, Compass } from "lucide-react";
+import type { lang } from "@/i18n/utils";
 
 type Props = {
-  lang: "en" | "es";
+  lang: lang;
 };
 
 const locales = {
