@@ -1,6 +1,7 @@
 import { Code, RssIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import formatDate from "@/utils/format-date";
+import type { lang } from "@/i18n/utils";
 
 const locales = {
   en: {
@@ -16,7 +17,7 @@ const locales = {
 };
 
 type Props = {
-  lang: "en" | "es";
+  lang: lang;
 };
 
 export default function Footer({ lang }: Props) {
