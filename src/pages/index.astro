@@ -28,7 +28,7 @@ const last3Blogs = allEnPosts.slice(0, 3);
 
 const allProjects = await getCollection(
   "portfolio",
-  ({ data }) => data.draft !== true,
+  ({ data }) => data.draft !== true
 );
 const allEnProjects = allProjects.map((project) => {
   const [lang, ...slug] = project.slug.split("/");
@@ -96,7 +96,7 @@ const lang = getLangFromUrl(Astro.url);
                     title={project.data.title!}
                   />
                 </li>
-              ),
+              )
           )
         }
       </ul>
