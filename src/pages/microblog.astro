@@ -1,24 +1,24 @@
 ---
-import MicroblogItem from "@/components/microblog-item.astro";
-import Layout from "@/layouts/Layout.astro";
-import { createServerClient } from "@/utils/pocketbase";
+import MicroblogItem from '@/components/microblog-item.astro';
+import Layout from '@/layouts/Layout.astro';
+import { createServerClient } from '@/utils/pocketbase';
 
 const pb = createServerClient(import.meta.env.SECRET_POCKETBASE_API_URL);
-const data = await pb.collection("microblogs").getFullList({
-  expand: "tags",
-  sort: "-published",
+const data = await pb.collection('microblogs').getFullList({
+  expand: 'tags',
+  sort: '-published',
 });
 ---
 
 <Layout
-  title="Microblog"
-  description="Short-format writing. Instead of using shitty social media."
+  title='Microblog'
+  description='Short-format writing. Instead of using shitty social media.'
 >
-  <div class="prose prose-invert">
+  <div class='prose prose-invert'>
     <h1>Microblog</h1>
     <p>Short-format writing.</p>
     <p>Instead of using shitty social media.</p>
-    <ul class="mx-auto p-0 mt-10 flex flex-col gap-10 list-none">
+    <ul class='mx-auto p-0 mt-10 flex flex-col gap-10 list-none'>
       {
         data.map((item: any) => (
           <li>

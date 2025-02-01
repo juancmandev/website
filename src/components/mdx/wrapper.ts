@@ -1,5 +1,5 @@
-import AstroImage from "@/components/mdx/astro-image.astro";
-import CustomAnchor from "@/components/mdx/custom-anchor";
+import AstroImage from '@/components/mdx/astro-image.astro';
+import CustomAnchor from '@/components/mdx/custom-anchor';
 
 const components = {
   img: AstroImage,

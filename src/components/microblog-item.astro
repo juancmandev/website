@@ -1,7 +1,7 @@
 ---
-import { marked } from "marked";
-import formatDate from "@/utils/format-date";
-import { getLangFromUrl } from "@/i18n/utils";
+import { marked } from 'marked';
+import formatDate from '@/utils/format-date';
+import { getLangFromUrl } from '@/i18n/utils';
 
 const props = Astro.props;
 const content = marked.parse(props.content);
@@ -9,22 +9,22 @@ const content = marked.parse(props.content);
 const lang = getLangFromUrl(Astro.url);
 ---
 
-<article class="rounded-md border px-4 py-2">
-  <header class="mb-2">
-    <section class="flex items-center justify-between text-sm">
-      <span class="font-light">
-        {formatDate(new Date(props.published), lang)}{" "}
+<article class='rounded-md border px-4 py-2'>
+  <header class='mb-2'>
+    <section class='flex items-center justify-between text-sm'>
+      <span class='font-light'>
+        {formatDate(new Date(props.published), lang)}{' '}
       </span>
-      <span class="text-sm font-thin">
+      <span class='text-sm font-thin'>
         {new Date(props.published).toLocaleTimeString()}
       </span>
     </section>
-    <section class="mt-1">
+    <section class='mt-1'>
       {
         props &&
           props.expand.tags &&
           props?.expand.tags.map(
-            (tag: any) => tag && <span class="text-sm">#{tag.name} </span>,
+            (tag: any) => tag && <span class='text-sm'>#{tag.name} </span>
           )
       }
     </section>

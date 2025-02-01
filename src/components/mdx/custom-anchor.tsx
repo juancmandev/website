@@ -3,9 +3,16 @@ type TAnchor = {
 } & React.HTMLAttributes<HTMLAnchorElement>;
 
 export default function CustomAnchor(props: TAnchor) {
-  return props.href.startsWith("/") || props.href.startsWith("#") ? (
-    <a {...props} className="inline-flex outline-ring" />
+  return props.href.startsWith('/') || props.href.startsWith('#') ? (
+    <a
+      {...props}
+      className='inline-flex outline-ring'
+    />
   ) : (
-    <a {...props} className="inline-flex outline-ring" target="_blank" />
+    <a
+      {...props}
+      className='inline-flex outline-ring'
+      target='_blank'
+    />
   );
 }

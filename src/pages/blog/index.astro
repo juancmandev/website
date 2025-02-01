@@ -1,25 +1,25 @@
 ---
-import PostItem from "@/components/post-item";
-import { getLangFromUrl } from "@/i18n/utils";
-import Layout from "@/layouts/Layout.astro";
-import { sortContentByDate } from "@/utils/sorts";
-import { getCollection } from "astro:content";
+import PostItem from '@/components/post-item';
+import { getLangFromUrl } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+import { sortContentByDate } from '@/utils/sorts';
+import { getCollection } from 'astro:content';
 
 const pageData = {
-    title: "Blog",
-    description: "Long format about thoughts and other topics.",
+  title: 'Blog',
+  description: 'Long format about thoughts and other topics.',
 };
 
-const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
 const filterEnPosts = allPosts.map((post) => {
-    const [lang, ...slug] = post.slug.split("/");
+  const [lang, id] = post.id.split('/');
 
-    if (lang === "en")
-        return {
-            ...post,
-            slug: slug.toString(),
-        };
-    else null;
+  if (lang === 'en')
+    return {
+      ...post,
+      id: id.split('.')[0],
+    };
+  else null;
 });
 sortContentByDate(filterEnPosts);
 
@@ -27,26 +27,26 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
-    <section class="prose prose-invert">
-        <h1>{pageData.title}</h1>
-        <p>{pageData.description}</p>
-    </section>
-    <ul class="mt-4 flex flex-col gap-4">
-        {
-            filterEnPosts.map(
-                (blogpost) =>
-                    blogpost && (
-                        <li>
-                            <PostItem
-                                type="blog"
-                                lang={lang}
-                                slug={blogpost.slug}
-                                date={blogpost.data.date!}
-                                title={blogpost.data.title!}
-                            />
-                        </li>
-                    ),
-            )
-        }
-    </ul>
+  <section class='prose prose-invert'>
+    <h1>{pageData.title}</h1>
+    <p>{pageData.description}</p>
+  </section>
+  <ul class='mt-4 flex flex-col gap-4'>
+    {
+      filterEnPosts.map(
+        (blogpost) =>
+          blogpost && (
+            <li>
+              <PostItem
+                type='blog'
+                lang={lang}
+                id={blogpost.id}
+                date={blogpost.data.date!}
+                title={blogpost.data.title!}
+              />
+            </li>
+          )
+      )
+    }
+  </ul>
 </Layout>

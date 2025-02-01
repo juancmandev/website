@@ -1,51 +1,48 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import components from "@/components/mdx/wrapper";
-import formatDate from "@/utils/format-date";
-import type { CollectionEntry } from "astro:content";
-import { getLangFromUrl } from "@/i18n/utils";
-
-interface Props {
-    post: CollectionEntry<"blog">;
-}
+import Layout from '@/layouts/Layout.astro';
+import components from '@/components/mdx/wrapper';
+import formatDate from '@/utils/format-date';
+import { getLangFromUrl } from '@/i18n/utils';
+import { getCollection, getEntry, render } from 'astro:content';
 
 export async function getStaticPaths() {
-    const allBlogPosts = await getCollection(
-        "blog",
-        ({ data }) => data.draft !== true,
-    );
-    const filterEnPosts = allBlogPosts.map((post) => {
-        const [lang, ...slug] = post.slug.split("/");
+  const allBlogPosts = await getCollection(
+    'blog',
+    ({ data }) => data.draft !== true
+  );
+  const filterEnPosts = allBlogPosts.map((post) => {
+    const [lang, id] = post.id.split('/');
 
-        if (lang === "en")
-            return {
-                ...post,
-                slug: slug.toString(),
-            };
-        else null;
-    });
+    if (lang === 'en')
+      return {
+        ...post,
+        id: id.split('.')[0],
+      };
+    else null;
+  });
 
-    return filterEnPosts.map((post) => ({
-        params: { slug: post?.slug },
-        props: { post },
-    }));
+  return filterEnPosts.map((post) => ({
+    params: { slug: post?.id },
+  }));
 }
 
-const { post } = Astro.props;
-const { Content } = await post.render();
-
 const lang = getLangFromUrl(Astro.url);
+const { slug } = Astro.params;
+const post = await getEntry('blog', `${lang}/${slug}`)!;
+const { Content, remarkPluginFrontmatter: data } = await render(post);
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-    <article class="prose prose-invert">
-        <h1>{post.data.title}</h1>
-        <Content components={{ ...components }} />
-        <hr />
-        <p>
-            <strong>Posted: </strong>
-            {post.data.date && formatDate(new Date(post.data.date), lang)}
-        </p>
-    </article>
+<Layout
+  title={data.title}
+  description={data.description}
+>
+  <article class='prose prose-invert'>
+    <h1>{data.title}</h1>
+    <Content components={{ ...components }} />
+    <hr />
+    <p>
+      <strong>Posted: </strong>
+      {data.date && formatDate(new Date(data.date), lang)}
+    </p>
+  </article>
 </Layout>
