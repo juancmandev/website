@@ -1,41 +1,46 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import components from "@/components/mdx/wrapper";
-import formatDate from "@/utils/format-date";
-import type { CollectionEntry } from "astro:content";
-import { getLangFromUrl } from "@/i18n/utils";
-
-interface Props {
-  project: CollectionEntry<"videos">;
-}
+import Layout from '@/layouts/Layout.astro';
+import components from '@/components/mdx/wrapper';
+import formatDate from '@/utils/format-date';
+import { getLangFromUrl } from '@/i18n/utils';
+import { getCollection, getEntry, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const allProjects = await getCollection(
-    "videos",
-    ({ data }) => data.draft !== true,
+  const allVideos = await getCollection(
+    'videos',
+    ({ data }) => data.draft !== true
   );
+  const formatVideos = allVideos.map((video) => {
+    const [id] = video.id.split('/');
 
-  return allProjects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
+    return {
+      ...video,
+      id: id.split('.')[0],
+    };
+  });
+
+  return formatVideos.map((video) => ({
+    params: { slug: video.id },
   }));
 }
 
-const { project } = Astro.props;
-const { Content } = await project.render();
-
 const lang = getLangFromUrl(Astro.url);
+const { slug } = Astro.params;
+const video = await getEntry('videos', slug)!;
+const { Content, remarkPluginFrontmatter: data } = await render(video);
 ---
 
-<Layout title={project.data.title} description={project.data.description}>
-  <article class="prose prose-invert">
-    <h1>{project.data.title}</h1>
+<Layout
+  title={data.title}
+  description={data.description}
+>
+  <article class='prose prose-invert'>
+    <h1>{data.title}</h1>
     <Content components={{ ...components }} />
     <hr />
     <p>
       <strong>Posted: </strong>
-      {project.data.date && formatDate(new Date(project.data.date), lang)}
+      {data.date && formatDate(new Date(data.date), lang)}
     </p>
   </article>
 </Layout>

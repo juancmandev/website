@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const contentSchema = z.object({
   title: z.string(),
@@ -13,17 +14,20 @@ const contentSchema = z.object({
 });
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: contentSchema,
 });
 
 const portfolio = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: '**/[^_]*.{md,mdx}',
+    base: './src/content/portfolio',
+  }),
   schema: contentSchema,
 });
 
 const pages = defineCollection({
-  type: "content",
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -31,13 +35,13 @@ const pages = defineCollection({
 });
 
 const videos = defineCollection({
-  type: "content",
-  schema: contentSchema
-})
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/videos' }),
+  schema: contentSchema,
+});
 
 export const collections = {
   blog,
   portfolio,
   pages,
-  videos
+  videos,
 };

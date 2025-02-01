@@ -1,25 +1,25 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import LinkButton from "@/components/link-button";
-import { getCollection } from "astro:content";
-import PostItem from "@/components/post-item";
-import { sortContentByDate } from "@/utils/sorts";
-import { getLangFromUrl } from "@/i18n/utils";
+import Layout from '@/layouts/Layout.astro';
+import LinkButton from '@/components/link-button';
+import { getCollection } from 'astro:content';
+import PostItem from '@/components/post-item';
+import { sortContentByDate } from '@/utils/sorts';
+import { getLangFromUrl } from '@/i18n/utils';
 
 const pageData = {
-  title: "juancmandev",
+  title: 'juancmandev',
   description:
-    "Welcome to my domain, stranger. I am juancmandev; Web Developer, Linux enthusiast, and privacy defender.",
+    'Welcome to my domain, stranger. I am juancmandev; Web Developer, Linux enthusiast, and privacy defender.',
 };
 
-const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
 const allEnPosts = allPosts.map((post) => {
-  const [lang, ...slug] = post.slug.split("/");
+  const [lang, id] = post.id.split('/');
 
-  if (lang !== "es")
+  if (lang !== 'es')
     return {
       ...post,
-      slug: slug.toString(),
+      id: id.split('.')[0],
     };
   else null;
 });
@@ -27,16 +27,16 @@ sortContentByDate(allEnPosts);
 const last3Blogs = allEnPosts.slice(0, 3);
 
 const allProjects = await getCollection(
-  "portfolio",
-  ({ data }) => data.draft !== true,
+  'portfolio',
+  ({ data }) => data.draft !== true
 );
 const allEnProjects = allProjects.map((project) => {
-  const [lang, ...slug] = project.slug.split("/");
+  const [lang, id] = project.id.split('/');
 
-  if (lang !== "es")
+  if (lang !== 'es')
     return {
       ...project,
-      slug: slug.toString(),
+      id: id.split('.')[0],
     };
   else null;
 });
@@ -47,10 +47,10 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
-  <div class="prose prose-invert">
-    <h1 class="text-primary">Welcome to my domain, stranger.</h1>
+  <div class='prose prose-invert'>
+    <h1 class='text-primary'>Welcome to my domain, stranger.</h1>
     <p>
-      I am <strong class="text-primary">juancmandev</strong>; <strong
+      I am <strong class='text-primary'>juancmandev</strong>; <strong
         >Web Developer</strong
       >, <strong>Linux</strong> enthusiast, and <strong>privacy</strong> defender.
     </p>
@@ -61,14 +61,14 @@ const lang = getLangFromUrl(Astro.url);
     </p>
     <section>
       <h2>Latest posts</h2>
-      <ul class="mt-0 p-0 list-none">
+      <ul class='mt-0 p-0 list-none'>
         {
           last3Blogs.map((blogpost: any) => (
-            <li class="p-0">
+            <li class='p-0'>
               <PostItem
-                type="blog"
+                type='blog'
                 lang={lang}
-                slug={blogpost.slug}
+                id={blogpost.id}
                 date={blogpost.data.date!}
                 title={blogpost.data.title!}
               />
@@ -76,31 +76,37 @@ const lang = getLangFromUrl(Astro.url);
           ))
         }
       </ul>
-      <LinkButton variant="secondary" href="/blog" className="no-underline"
+      <LinkButton
+        variant='secondary'
+        href='/blog'
+        className='no-underline'
         >More posts</LinkButton
       >
     </section>
     <section>
       <h2>Latest projects</h2>
-      <ul class="mt-0 p-0 list-none">
+      <ul class='mt-0 p-0 list-none'>
         {
           last3Projects.map(
             (project) =>
               project && (
-                <li class="p-0">
+                <li class='p-0'>
                   <PostItem
                     lang={lang}
-                    type="portfolio"
-                    slug={project.slug}
+                    type='portfolio'
+                    id={project.id}
                     date={project.data.date!}
                     title={project.data.title!}
                   />
                 </li>
-              ),
+              )
           )
         }
       </ul>
-      <LinkButton variant="secondary" href="/portfolio" className="no-underline"
+      <LinkButton
+        variant='secondary'
+        href='/portfolio'
+        className='no-underline'
         >More projects</LinkButton
       >
     </section>

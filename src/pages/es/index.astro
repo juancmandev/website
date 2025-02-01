@@ -1,25 +1,25 @@
 ---
-import LinkButton from "@/components/link-button";
-import PostItem from "@/components/post-item";
-import { getLangFromUrl } from "@/i18n/utils";
-import Layout from "@/layouts/Layout.astro";
-import { sortContentByDate } from "@/utils/sorts";
-import { getCollection } from "astro:content";
+import LinkButton from '@/components/link-button';
+import PostItem from '@/components/post-item';
+import { getLangFromUrl } from '@/i18n/utils';
+import Layout from '@/layouts/Layout.astro';
+import { sortContentByDate } from '@/utils/sorts';
+import { getCollection } from 'astro:content';
 
 const pageData = {
-  title: "juancmandev",
+  title: 'juancmandev',
   description:
-    "Bienvenido a mi dominio, extraño. Soy juancmandev; Desarrollador Web, entusiasta de Linux, y defensor de la privacidad.",
+    'Bienvenido a mi dominio, extraño. Soy juancmandev; Desarrollador Web, entusiasta de Linux, y defensor de la privacidad.',
 };
 
-const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
 const allEsPosts = allPosts.map((post) => {
-  const [lang, ...slug] = post.slug.split("/");
+  const [lang, id] = post.id.split('/');
 
-  if (lang === "es")
+  if (lang !== 'en')
     return {
       ...post,
-      slug: slug.toString(),
+      id: id.split('.')[0],
     };
   else null;
 });
@@ -27,16 +27,16 @@ sortContentByDate(allEsPosts);
 const last3Blogs = allEsPosts.slice(0, 3);
 
 const allProjects = await getCollection(
-  "portfolio",
-  ({ data }) => data.draft !== true,
+  'portfolio',
+  ({ data }) => data.draft !== true
 );
 const allEnProjects = allProjects.map((project) => {
-  const [lang, ...slug] = project.slug.split("/");
+  const [lang, id] = project.id.split('/');
 
-  if (lang === "es")
+  if (lang !== 'en')
     return {
       ...project,
-      slug: slug.toString(),
+      id: id.split('.')[0],
     };
   else null;
 });
@@ -47,10 +47,10 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
-  <div class="prose prose-invert">
-    <h1 class="text-primary">Bienvenido a mi dominio, extraño.</h1>
+  <div class='prose prose-invert'>
+    <h1 class='text-primary'>Bienvenido a mi dominio, extraño.</h1>
     <p>
-      Soy <strong class="text-primary">juancmandev</strong>; <strong
+      Soy <strong class='text-primary'>juancmandev</strong>; <strong
         >Desarrollador Web</strong
       >, entusiasta de <strong>Linux</strong> y defensor de la <strong
         >privacidad.</strong
@@ -63,52 +63,56 @@ const lang = getLangFromUrl(Astro.url);
     </p>
     <section>
       <h2>Últimos posts</h2>
-      <ul class="mt-0 p-0 list-none">
+      <ul class='mt-0 p-0 list-none'>
         {
           last3Blogs.map(
             (blogpost) =>
               blogpost && (
-                <li class="p-0">
+                <li class='p-0'>
                   <PostItem
-                    type="blog"
+                    type='blog'
                     lang={lang}
-                    slug={blogpost?.slug}
+                    id={blogpost.id}
                     date={blogpost.data.date}
                     title={blogpost.data.title}
                   />
                 </li>
-              ),
+              )
           )
         }
       </ul>
-      <LinkButton variant="secondary" href="/es/blog" className="no-underline"
+      <LinkButton
+        variant='secondary'
+        href='/es/blog'
+        className='no-underline'
         >Más posts</LinkButton
       >
     </section>
     <section>
       <h2>Últimos proyectos</h2>
-      <ul class="mt-0 p-0 list-none">
+      <ul class='mt-0 p-0 list-none'>
         {
           last3Projects.map(
             (project) =>
               project && (
-                <li class="p-0">
+                <li class='p-0'>
                   <PostItem
                     lang={lang}
-                    type="portfolio"
-                    slug={project.slug}
+                    type='portfolio'
+                    id={project.id}
                     date={project.data.date!}
                     title={project.data.title!}
                   />
                 </li>
-              ),
+              )
           )
         }
       </ul>
       <LinkButton
-        variant="secondary"
-        href="/es/portfolio"
-        className="no-underline">Más proyectos</LinkButton
+        variant='secondary'
+        href='/es/portfolio'
+        className='no-underline'
+        >Más proyectos</LinkButton
       >
     </section>
   </div>

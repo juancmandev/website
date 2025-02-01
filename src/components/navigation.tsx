@@ -1,4 +1,4 @@
-import LinkButton from "@/components/link-button";
+import LinkButton from '@/components/link-button';
 import {
   NotebookText,
   BriefcaseBusiness,
@@ -7,8 +7,8 @@ import {
   PocketKnife,
   Info,
   Mail,
-} from "lucide-react";
-import { useTranslations, type lang } from "@/i18n/utils";
+} from 'lucide-react';
+import { useTranslations, type lang } from '@/i18n/utils';
 
 type TNavItem = {
   type: string;
@@ -17,28 +17,28 @@ type TNavItem = {
 
 export const navItems: TNavItem[] = [
   {
-    type: "blog",
+    type: 'blog',
     icon: <NotebookText />,
   },
-  { type: "portfolio", icon: <BriefcaseBusiness /> },
+  { type: 'portfolio', icon: <BriefcaseBusiness /> },
   {
-    type: "videos",
+    type: 'videos',
     icon: <MonitorPlay />,
   },
   {
-    type: "microblog",
+    type: 'microblog',
     icon: <Newspaper />,
   },
   {
-    type: "resources",
+    type: 'resources',
     icon: <PocketKnife />,
   },
   {
-    type: "about",
+    type: 'about',
     icon: <Info />,
   },
   {
-    type: "contact",
+    type: 'contact',
     icon: <Mail />,
   },
 ];
@@ -51,15 +51,18 @@ export default function Navigation(props: Props) {
   const t = useTranslations(props.lang as any);
 
   return (
-    <nav className="px-4 sm:px-0 max-w-[65ch] mx-auto prose prose-invert pt-5 pb-20">
-      <h2 id="navigation">{t("navigation")}</h2>
-      <ul className="list-none p-0 flex flex-wrap gap-4">
+    <nav className='px-4 sm:px-0 max-w-[65ch] mx-auto prose prose-invert pt-5 pb-20'>
+      <h2 id='navigation'>{t('navigation')}</h2>
+      <ul className='list-none p-0 flex flex-wrap gap-4'>
         {navItems.map((navItem, index) => (
-          <li key={index} className="m-0 p-0">
+          <li
+            key={index}
+            className='m-0 p-0'
+          >
             <LinkButton
-              variant="link"
+              variant='link'
               href={t(`${navItem.type}.to` as any)}
-              className="p-0 text-base gap-1"
+              className='p-0 text-base gap-1'
             >
               {navItem.icon}
               {t(`${navItem.type}.label` as any)}

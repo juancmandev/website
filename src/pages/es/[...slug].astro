@@ -1,28 +1,38 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import components from "@/components/mdx/wrapper";
-import type { CollectionEntry } from "astro:content";
-
-interface Props {
-  page: CollectionEntry<"pages">;
-}
+import Layout from '@/layouts/Layout.astro';
+import components from '@/components/mdx/wrapper';
+import { getLangFromUrl } from '@/i18n/utils';
+import { getCollection, getEntry, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const allPages = await getCollection("pages");
+  const allPages = await getCollection('pages');
+  const filterEsPages = allPages.map((page) => {
+    const [lang, id] = page.id.split('/');
 
-  return allPages.map((page: CollectionEntry<"pages">) => ({
-    params: { slug: page.slug },
-    props: { page },
+    if (lang === 'es')
+      return {
+        ...page,
+        id: id.split('.')[0],
+      };
+    else null;
+  });
+
+  return filterEsPages.map((page) => ({
+    params: { slug: page?.id },
   }));
 }
 
-const { page } = Astro.props;
-const { Content } = await page.render();
+const lang = getLangFromUrl(Astro.url);
+const { slug } = Astro.params;
+const page = await getEntry('pages', `${lang}/${slug}`)!;
+const { Content, remarkPluginFrontmatter: data } = await render(page);
 ---
 
-<Layout {...page.data}>
-  <article class="prose prose-invert">
+<Layout
+  title={data.title}
+  description={data.description}
+>
+  <article class='prose prose-invert'>
     <Content components={{ ...components }} />
   </article>
 </Layout>

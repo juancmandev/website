@@ -1,9 +1,11 @@
-import { ui, defaultLang, showDefaultLang } from "@/i18n/ui";
+import { ui, defaultLang, showDefaultLang } from '@/i18n/ui';
+
+export type lang = 'en' | 'es';
 
 export type lang = "en" | "es";
 
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split("/");
+  const [, lang] = url.pathname.split('/');
   if (lang in ui) return lang as keyof typeof ui;
   return defaultLang;
 }

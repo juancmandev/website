@@ -1,10 +1,10 @@
-import PocketBase from "pocketbase";
-import type { RecordService } from "pocketbase";
+import PocketBase from 'pocketbase';
+import type { RecordService } from 'pocketbase';
 
 export enum Collections {
-  Microblogs = "microblogs",
-  Tags = "tags",
-  Users = "users",
+  Microblogs = 'microblogs',
+  Tags = 'tags',
+  Users = 'users',
 }
 
 export type IsoDateString = string;
@@ -62,19 +62,19 @@ export type CollectionResponses = {
 };
 
 export type TypedPocketBase = PocketBase & {
-  collection(idOrName: "microblogs"): RecordService<MicroblogsResponse>;
-  collection(idOrName: "tags"): RecordService<TagsResponse>;
-  collection(idOrName: "users"): RecordService<UsersResponse>;
+  collection(idOrName: 'microblogs'): RecordService<MicroblogsResponse>;
+  collection(idOrName: 'tags'): RecordService<TagsResponse>;
+  collection(idOrName: 'users'): RecordService<UsersResponse>;
 };
 
 export function createServerClient(url: string) {
   if (!url) {
-    throw new Error("Pocketbase API url not defined !");
+    throw new Error('Pocketbase API url not defined !');
   }
 
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     throw new Error(
-      "This method is only supposed to call from the Server environment",
+      'This method is only supposed to call from the Server environment'
     );
   }
 

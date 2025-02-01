@@ -1,23 +1,23 @@
 ---
-import { Image } from "astro:assets";
+import { Image } from 'astro:assets';
 
 const props = Astro.props;
 ---
 
 <Image
-  id="img"
-  decoding="async"
+  id='img'
+  decoding='async'
   src={props.src}
   alt={props.alt}
   width={props.width}
   height={props.height}
-  class="w-auto h-auto rounded-md aspect-auto object-cover"
+  class='w-auto h-auto rounded-md aspect-auto object-cover'
 />
 
 <script>
-  const image = document.getElementById("img")!;
+  const image = document.getElementById('img')!;
 
-  image && image.setAttribute("loading", "eager");
-  image && image.setAttribute("decoding", "sync");
-  image && image.setAttribute("fetchpriority", "high");
+  image && image.setAttribute('loading', 'eager');
+  image && image.setAttribute('decoding', 'sync');
+  image && image.setAttribute('fetchpriority', 'high');
 </script>
