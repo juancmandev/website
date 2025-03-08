@@ -44,5 +44,11 @@
     "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.13.0",
     "pocketbase": "^0.21.5"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
