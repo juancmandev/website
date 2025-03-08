@@ -15,7 +15,7 @@ export default function PostItem(props: Props) {
       asChild
       size={null}
       variant='link'
-      className='px-4 whitespace-normal py-2 hover:no-underline focus:no-underline flex flex-col items-start italic border border-secondary hover:border-foreground focus:border-foreground transition-colors rounded-md'
+      className='group hover:no-underline focus:no-underline text-foreground visited:text-purple-600 px-4 whitespace-normal py-2 flex flex-col items-start italic border border-secondary hover:border-foreground focus:border-foreground transition-colors rounded-md'
     >
       <a
         className='no-underline'
@@ -25,10 +25,10 @@ export default function PostItem(props: Props) {
             : `/es/${props.type}/${[props.id]}`
         }
       >
-        <span className='text-sm font-light no-underline'>
+        <span className='text-foreground text-sm font-light no-underline'>
           {formatDate(props.date, props.lang)}
         </span>
-        <span className='text-primary text-underline text-lg font-semibold underline'>
+        <span className='text-lg font-semibold group-hover:underline group-focus:underline'>
           {props.title}
         </span>
       </a>
