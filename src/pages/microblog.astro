@@ -3,7 +3,7 @@ import MicroblogItem from '@/components/microblog-item.astro';
 import Layout from '@/layouts/Layout.astro';
 import { createServerClient } from '@/utils/pocketbase';
 
-const pb = createServerClient('https://juancman.dev/pb');
+const pb = createServerClient('https://pb.juancman.dev/');
 const data = await pb.collection('microblogs').getFullList({
   expand: 'tags',
   sort: '-published',
