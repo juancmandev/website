@@ -69,7 +69,7 @@ export type TypedPocketBase = PocketBase & {
 
 export function createServerClient(url: string) {
   if (!url) {
-    throw new Error('Pocketbase API url not defined !');
+    throw new Error('Pocketbase API url not defined!');
   }
 
   if (typeof window !== 'undefined') {
