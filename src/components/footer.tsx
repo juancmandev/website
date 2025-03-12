@@ -62,7 +62,7 @@ export default function Footer({ lang }: Props) {
         >
           <a
             target='_blank'
-            href='https://github.com/juancmandev/website'
+            href='https://git.juancman.dev/juancmandev/website'
           >
             <Code className='w-6' />
             Source Code
