@@ -32,7 +32,7 @@ const { Content, remarkPluginFrontmatter: data } = await render(project);
   title={data.title}
   description={data.description}
 >
-  <article class='prose prose-invert'>
+  <article class='prose prose-invert max-w-[800px] mx-auto'>
     <Content components={{ ...components }} />
   </article>
 </Layout>

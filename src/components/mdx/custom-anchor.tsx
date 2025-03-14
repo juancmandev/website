@@ -11,7 +11,7 @@ export default function CustomAnchor(props: TAnchor) {
   ) : (
     <a
       {...props}
-      className='inline-flex outline-ring visited:text-purple-600'
+      className='inline-flex outline-ring visited:text-purple-500'
       target='_blank'
     />
   );

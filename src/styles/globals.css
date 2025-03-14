@@ -9,6 +9,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  .prose {
+    @apply max-w-none;
+  }
   [data-rehype-pretty-code-figure] {
     @apply bg-[#1e1e2e] rounded-md pt-4;
   }

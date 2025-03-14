@@ -1,5 +1,5 @@
 ---
-import PostItem from '@/components/post-item';
+import PostItemList from '@/components/post-items-list';
 import { getLangFromUrl } from '@/i18n/utils';
 import Layout from '@/layouts/Layout.astro';
 import { sortContentByDate } from '@/utils/sorts';
@@ -27,26 +27,12 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
-  <section class='prose prose-invert'>
+  <div class='prose prose-invert max-w-[800px] mx-auto'>
     <h1>{pageData.title}</h1>
     <p>{pageData.description}</p>
-  </section>
-  <ul class='mt-4 flex flex-col gap-4'>
-    {
-      filterEnPosts.map(
-        (blogpost) =>
-          blogpost && (
-            <li>
-              <PostItem
-                type='blog'
-                lang={lang}
-                id={blogpost.id}
-                date={blogpost.data.date!}
-                title={blogpost.data.title!}
-              />
-            </li>
-          )
-      )
-    }
-  </ul>
+    <PostItemList
+      items={filterEnPosts}
+      lang={lang}
+    />
+  </div>
 </Layout>

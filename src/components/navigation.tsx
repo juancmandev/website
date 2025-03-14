@@ -1,7 +1,6 @@
 import LinkButton from '@/components/link-button';
 import {
   NotebookText,
-  BriefcaseBusiness,
   MonitorPlay,
   Newspaper,
   PocketKnife,
@@ -20,7 +19,6 @@ export const navItems: TNavItem[] = [
     type: 'blog',
     icon: <NotebookText />,
   },
-  { type: 'portfolio', icon: <BriefcaseBusiness /> },
   {
     type: 'videos',
     icon: <MonitorPlay />,
@@ -51,7 +49,7 @@ export default function Navigation(props: Props) {
   const t = useTranslations(props.lang as any);
 
   return (
-    <nav className='px-4 sm:px-0 max-w-[65ch] mx-auto prose prose-invert pt-5 pb-20'>
+    <nav className='prose prose-invert max-w-[800px] mx-auto px-2 lg:px-0 py-16'>
       <h2 id='navigation'>{t('navigation')}</h2>
       <ul className='list-none p-0 flex flex-wrap gap-4'>
         {navItems.map((navItem, index) => (

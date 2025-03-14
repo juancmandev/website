@@ -10,19 +10,12 @@ const contentSchema = z.object({
   tags: z.array(z.string()),
   author: z.string(),
   rss: z.boolean(),
-  draft: z.boolean({}).optional(),
+  draft: z.boolean().optional(),
+  archived: z.boolean().optional(),
 });
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
-  schema: contentSchema,
-});
-
-const portfolio = defineCollection({
-  loader: glob({
-    pattern: '**/[^_]*.{md,mdx}',
-    base: './src/content/portfolio',
-  }),
   schema: contentSchema,
 });
 
@@ -41,7 +34,6 @@ const videos = defineCollection({
 
 export const collections = {
   blog,
-  portfolio,
   pages,
   videos,
 };

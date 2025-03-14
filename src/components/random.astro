@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { readdirSync } from 'fs';
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/random/*.{jpeg,jpg,png,gif}'
+);
+const imagePaths = readdirSync('./src/assets/random/');
+const randomIndex = Math.floor(Math.random() * (imagePaths.length - 0));
+const randomImage = `/src/assets/random/${imagePaths[randomIndex]}`;
+---
+
+<Image
+  decoding='sync'
+  loading='eager'
+  src={images[randomImage]()}
+  alt='image'
+  width={300}
+  class='w-auto h-auto rounded-md aspect-auto object-cover mx-auto'
+/>

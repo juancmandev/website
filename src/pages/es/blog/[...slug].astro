@@ -36,7 +36,7 @@ const { Content, remarkPluginFrontmatter: data } = await render(blog);
   title={data.title}
   description={data.description}
 >
-  <article class='prose prose-invert'>
+  <article class='prose prose-invert max-w-[800px] mx-auto'>
     <h1>{data.title}</h1>
     <Content components={{ ...components }} />
     <hr />

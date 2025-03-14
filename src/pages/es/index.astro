@@ -1,6 +1,6 @@
 ---
 import LinkButton from '@/components/link-button';
-import PostItem from '@/components/post-item';
+import PostItemList from '@/components/post-items-list';
 import { getLangFromUrl } from '@/i18n/utils';
 import Layout from '@/layouts/Layout.astro';
 import { sortContentByDate } from '@/utils/sorts';
@@ -26,28 +26,11 @@ const allEsPosts = allPosts.map((post) => {
 sortContentByDate(allEsPosts);
 const last3Blogs = allEsPosts.slice(0, 3);
 
-const allProjects = await getCollection(
-  'portfolio',
-  ({ data }) => data.draft !== true
-);
-const allEnProjects = allProjects.map((project) => {
-  const [lang, id] = project.id.split('/');
-
-  if (lang !== 'en')
-    return {
-      ...project,
-      id: id.split('.')[0],
-    };
-  else null;
-});
-sortContentByDate(allEnProjects);
-const last3Projects = allEnProjects.slice(0, 3);
-
 const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout {...pageData}>
-  <div class='prose prose-invert'>
+  <div class='prose prose-invert max-w-[800px] mx-auto'>
     <h1 class='text-primary'>Bienvenido a mi dominio, extraño.</h1>
     <p>
       Soy <strong class='text-primary'>juancmandev</strong>; <strong
@@ -63,56 +46,15 @@ const lang = getLangFromUrl(Astro.url);
     </p>
     <section>
       <h2>Últimos posts</h2>
-      <ul class='mt-0 p-0 list-none'>
-        {
-          last3Blogs.map(
-            (blogpost) =>
-              blogpost && (
-                <li class='p-0'>
-                  <PostItem
-                    type='blog'
-                    lang={lang}
-                    id={blogpost.id}
-                    date={blogpost.data.date}
-                    title={blogpost.data.title}
-                  />
-                </li>
-              )
-          )
-        }
-      </ul>
+      <PostItemList
+        items={last3Blogs}
+        lang={lang}
+      />
       <LinkButton
         variant='secondary'
         href='/es/blog'
         className='no-underline'
         >Más posts</LinkButton
-      >
-    </section>
-    <section>
-      <h2>Últimos proyectos</h2>
-      <ul class='mt-0 p-0 list-none'>
-        {
-          last3Projects.map(
-            (project) =>
-              project && (
-                <li class='p-0'>
-                  <PostItem
-                    lang={lang}
-                    type='portfolio'
-                    id={project.id}
-                    date={project.data.date!}
-                    title={project.data.title!}
-                  />
-                </li>
-              )
-          )
-        }
-      </ul>
-      <LinkButton
-        variant='secondary'
-        href='/es/portfolio'
-        className='no-underline'
-        >Más proyectos</LinkButton
       >
     </section>
   </div>

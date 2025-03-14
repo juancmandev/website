@@ -12,9 +12,6 @@ const markdownParser = new MarkdownIt();
 const imagesBlog = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/blog/**/**/*.{jpeg,jpg,png,gif,webp}'
 );
-const imagesPortfolio = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/portfolio/**/**/*.{jpeg,jpg,png,gif,webp}'
-);
 
 export async function GET(context: any) {
   const items: RSSFeedItem[] = [];
@@ -27,16 +24,6 @@ export async function GET(context: any) {
     const [lang] = post.id.split('/');
 
     return lang === 'es' && post;
-  });
-
-  const portfolio = await getCollection(
-    'portfolio',
-    ({ data }) => data.draft !== true && data.rss === true
-  );
-  const filterPortfolio = portfolio.filter((project) => {
-    const [lang] = project.id.split('/');
-
-    return lang === 'es' && project;
   });
 
   for await (const post of filterBlog) {
@@ -73,47 +60,6 @@ export async function GET(context: any) {
       pubDate: post.data.date,
       description: post.data.description,
       link: `/blog/${post.id.split('.')[0]}/`,
-      content: sanitizeHtml(html.toString(), {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
-      }),
-    });
-  }
-
-  for await (const project of filterPortfolio) {
-    const body = markdownParser.render(project.body!);
-    const html = htmlParser.parse(body);
-    const images = html.querySelectorAll('img');
-
-    for await (const img of images) {
-      const src = img.getAttribute('src')!;
-
-      if (src.startsWith('@/')) {
-        const prefixRemoved = src.replace('@/', '');
-        const imagePathPrefix = `/src/${prefixRemoved}`;
-        const imagePath = await imagesPortfolio[imagePathPrefix]?.()?.then(
-          (res: any) => res.default
-        );
-
-        if (imagePath) {
-          const optimizedImg = await getImage({ src: imagePath });
-          img.setAttribute(
-            'src',
-            context.site + optimizedImg.src.replace('/', '')
-          );
-        }
-      } else if (src.startsWith('/images')) {
-        // images starting with `/images/` is the public dir
-        img.setAttribute('src', context.site + src.replace('/', ''));
-      } else {
-        throw Error('src unknown');
-      }
-    }
-
-    items.push({
-      title: project.data.title,
-      pubDate: project.data.date,
-      description: project.data.description,
-      link: `/portfolio/${project.id.split('.')[0]}/`,
       content: sanitizeHtml(html.toString(), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
       }),
