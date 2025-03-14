@@ -11,7 +11,7 @@ export default function PostItem(props: TPostItem) {
     >
       <a
         className='no-underline'
-        href={`/${props.lang === 'es' && 'es'}/${props.type}/${props.id}`}
+        href={`/${props.lang === 'es' ? 'es' : ''}/${props.type}/${props.id}`}
       >
         <span className='text-foreground  text-sm font-light no-underline'>
           {formatDate(props.date, props.lang)}
