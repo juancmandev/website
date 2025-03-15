@@ -5,7 +5,6 @@ import { getCollection } from 'astro:content';
 import { sortContentByDate } from '@/utils/sorts';
 import { getLangFromUrl } from '@/i18n/utils';
 import PostItemList from '@/components/post-items-list';
-import Random from '@/components/random.astro';
 
 const pageData = {
   title: 'juancmandev',
@@ -33,7 +32,6 @@ const lang = getLangFromUrl(Astro.url);
 <Layout {...pageData}>
   <div class='prose prose-invert max-w-3xl mx-auto'>
     <h1 class='text-primary'>Welcome to my domain, stranger.</h1>
-    <!-- <Random /> -->
     <p>
       I am <strong class='text-primary'>Juan Manzanero</strong>; <strong
         >Web Developer</strong
