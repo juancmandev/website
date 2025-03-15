@@ -11,7 +11,7 @@ type Props = {
 
 export default function Footer({ lang }: Props) {
   return (
-    <footer className='px-2 pt-14 pb-28 text-center lg:px-0 prose prose-invert min-w-full'>
+    <footer className='px-2 pt-14 pb-28 text-center md:px-0 prose prose-invert min-w-full'>
       <section>
         <p>
           {footerLocales[lang].built_with}

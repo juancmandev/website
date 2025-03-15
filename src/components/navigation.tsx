@@ -6,6 +6,7 @@ import {
   PocketKnife,
   Info,
   Mail,
+  CircleDollarSign,
 } from 'lucide-react';
 import { useTranslations, type lang } from '@/i18n/utils';
 
@@ -39,6 +40,10 @@ export const navItems: TNavItem[] = [
     type: 'contact',
     icon: <Mail />,
   },
+  {
+    type: 'donate',
+    icon: <CircleDollarSign />
+  }
 ];
 
 type Props = {
@@ -49,7 +54,7 @@ export default function Navigation(props: Props) {
   const t = useTranslations(props.lang as any);
 
   return (
-    <nav className='prose prose-invert max-w-[800px] mx-auto px-2 lg:px-0 py-16'>
+    <nav className='prose prose-invert max-w-3xl mx-auto px-2 md:px-0 py-16'>
       <h2 id='navigation'>{t('navigation')}</h2>
       <ul className='list-none p-0 flex flex-wrap gap-4'>
         {navItems.map((navItem, index) => (

@@ -5,12 +5,16 @@
 @layer base {
   * {
     @apply border-border;
+    scroll-margin-top: 60px;
   }
   body {
     @apply bg-background text-foreground;
   }
   .prose {
     @apply max-w-none;
+  }
+  li {
+    overflow-wrap: break-word
   }
   [data-rehype-pretty-code-figure] {
     @apply bg-[#1e1e2e] rounded-md pt-4;
@@ -32,8 +36,5 @@
   }
   .prose pre > code {
     @apply bg-transparent border-none;
-  }
-  * {
-    scroll-margin-top: 72px;
   }
 }

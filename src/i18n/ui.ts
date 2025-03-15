@@ -23,6 +23,8 @@ export const ui = {
     'about.to': '/about',
     'contact.label': 'Contact',
     'contact.to': '/contact',
+    'donate.label': 'Donate',
+    'donate.to': '/donate',
   },
   es: {
     navigation: 'Navegación',
@@ -40,5 +42,7 @@ export const ui = {
     'about.to': '/es/acerca-de',
     'contact.label': 'Contacto',
     'contact.to': '/es/contacto',
+    'donate.label': 'Donar',
+    'donate.to': '/es/donar',
   },
 } as const;
