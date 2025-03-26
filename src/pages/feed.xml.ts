@@ -59,6 +59,7 @@ export async function GET(context: any) {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
+      author: post.data.author || 'Juan Manzanero',
       link: `/blog/${post.id.split('.')[0]}/`,
       content: sanitizeHtml(html.toString(), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
