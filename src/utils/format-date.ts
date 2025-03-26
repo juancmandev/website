@@ -27,7 +27,12 @@ const meses = [
   'Diciembre',
 ];
 
-export default function formatDate(date: Date | string, lang: string) {
+export default function formatDate(
+  date: Date | string | undefined,
+  lang: string
+) {
+  if (date === undefined) return '';
+
   const newDate = new Date(date);
   const month = months[newDate.getMonth()];
   const mes = meses[newDate.getMonth()];

@@ -10,7 +10,7 @@ import type { ImageMetadata } from 'astro';
 const markdownParser = new MarkdownIt();
 
 const imagesBlog = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/blog/**/**/*.{jpeg,jpg,png,gif,webp}'
+  '/src/assets/blog/**/*.{jpeg,jpg,png,gif,webp}'
 );
 
 export async function GET(context: any) {

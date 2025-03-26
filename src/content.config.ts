@@ -6,7 +6,7 @@ const contentSchema = z.object({
   description: z.string(),
   image: z.string(),
   imageCaption: z.string(),
-  date: z.coerce.date(),
+  date: z.coerce.date().optional(),
   tags: z.array(z.string()),
   author: z.string(),
   rss: z.boolean(),
