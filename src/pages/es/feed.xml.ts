@@ -69,17 +69,17 @@ export async function GET(context: any) {
 
   return rss({
     xmlns: { atom: 'http://www.w3.org/2005/Atom' },
-    title: 'juancmandev',
+    title: 'Juan Manzanero',
     description: 'Bienvenido a mi dominio, extraño.',
     site: `${context.site}es/`,
     customData: [
       '<language>es-mx</language>',
       `<image>
-          <url>https://juancman.dev/logo.png</url>
-          <title>juancmandev</title>
-          <link>https://juancman.dev</link>
+          <url>${context.site}/logo.png</url>
+          <title>Juan Manzanero</title>
+          <link>${context.site}</link>
       </image>`,
-      `<atom:link href="${context.site}es/feed.xml" rel="self" type="application/rss+xml"/>`,
+      `<atom:link href="${context.site}/es/feed.xml" rel="self" type="application/rss+xml"/>`,
     ].join(''),
     items,
     trailingSlash: false,

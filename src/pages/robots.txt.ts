@@ -4,7 +4,7 @@ const robotsTxt = `
 User-agent: *
 Allow: /
 
-Sitemap: ${new URL('sitemap-index.xml', 'https://juancman.dev').href}
+Sitemap: ${new URL('sitemap-index.xml', 'https://juanmanzanero.com').href}
 `.trim();
 
 export const GET: APIRoute = () => {

@@ -35,12 +35,12 @@ export default function Footer({ lang }: Props) {
       </section>
       <section className='w-max mx-auto flex items-center gap-12'>
         <VerticalLinkButton
-          href={`https://juancman.dev/${lang === 'es' ? 'es/' : ''}feed.xml`}
+          href={`https://juanmanzanero.com/${lang === 'es' ? 'es/' : ''}feed.xml`}
         >
           <RssIcon className='w-6' />
           RSS feed
         </VerticalLinkButton>
-        <VerticalLinkButton href='https://git.juancman.dev/juancmandev/website'>
+        <VerticalLinkButton href='https://git.juanmanzanero.com/juanmanzanero/website'>
           <Code className='w-6' />
           Source Code
         </VerticalLinkButton>

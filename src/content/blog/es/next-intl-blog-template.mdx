@@ -12,7 +12,7 @@ rss: true
 ![Next Intl Blog Template banner](@/assets/blog/next-intl-blog-template/banner.png)
 _Next Intl Blog Template banner_
 
-[GitHub](https://github.com/juancmandev/next-intl-blog-template)
+[GitHub](https://github.com/juanmanzanerod/next-intl-blog-template)
 
 [Website](https://next-intl-blog-template.vercel.app/en)
 
@@ -35,9 +35,9 @@ Este template es una extensión de [next-intl](https://next-intl-docs.vercel.app
 Puedes agregar o remover locales en el archivo `src/lang/locales.ts`.
 
 ```ts title="src/lang/locales.ts"
-export type locales = "en" | "es";
+export type locales = 'en' | 'es';
 
-export const localesList: locales[] = ["en", "es"];
+export const localesList: locales[] = ['en', 'es'];
 ```
 
 Solo agrega o remueve un locale de la constante `locales`, y agrega o remueve el locale de la lista.
@@ -48,7 +48,7 @@ La lista es usada para la generación de rutas estáticas en
 `src/app/[locale]/layout.tsx`.
 
 ```ts title="src/app/[locale]/layout.tsx"
-import { localesList } from "@/lang/locales";
+import { localesList } from '@/lang/locales';
 
 export function generateStaticParams() {
   return localesList.map((locale) => ({ locale }));
@@ -61,7 +61,7 @@ Recuerda actualizar el matcher en `src/middleware.ts`.
 //...
 
 export const config = {
-  matcher: ["/", "/(en|es)/:path*"],
+  matcher: ['/', '/(en|es)/:path*'],
 };
 ```
 
@@ -76,15 +76,15 @@ Dentro crea el archivo .mdx con un nombre único, el nombre será usado como slu
 Para crear una sección de blog, usarás la función _getAllContent_ en tu ruta, por ejemplo: `src/app/[locale]/blog/[slug]/page.tsx`.
 
 ```tsx title="src/app/[locale]/blog/[slug]/page.tsx"
-import { Mdx } from "@/components";
-import { TParamsLocale, TPage, TSlugLang } from "@/types";
-import { Metadata } from "next";
-import { getAllContent, getContent } from "@/utils/getContent";
+import { Mdx } from '@/components';
+import { TParamsLocale, TPage, TSlugLang } from '@/types';
+import { Metadata } from 'next';
+import { getAllContent, getContent } from '@/utils/getContent';
 
 export async function generateStaticParams(
-  props: TParamsLocale,
+  props: TParamsLocale
 ): Promise<TSlugLang[]> {
-  const blogs = await getAllContent(props.params.locale, "blog");
+  const blogs = await getAllContent(props.params.locale, 'blog');
 
   if (!blogs) return [];
 
@@ -105,7 +105,7 @@ Puedes obtener la metadata del archivo `.mdx` también.
 //...
 
 export async function generateMetadata(props: TPage): Promise<Metadata> {
-  const blog = await getContent(props.params.locale, "blog", props.params.slug);
+  const blog = await getContent(props.params.locale, 'blog', props.params.slug);
 
   if (!blog) return {};
 
@@ -124,7 +124,7 @@ Entonces, renderiza el contenido usando el componente _Mdx_.
 //...
 
 export default async function Page(props: TPage) {
-  const post = await getContent(props.params.locale, "blog", props.params.slug);
+  const post = await getContent(props.params.locale, 'blog', props.params.slug);
 
   if (!post) return null;
 
@@ -132,8 +132,4 @@ export default async function Page(props: TPage) {
 }
 ```
 
-[Puedes hacer un fork de este template aquí](https://github.com/juancmandev/next-intl-blog-template)
-
-## Contacto
-
-Si te interesa **trabajar juntos** en un website con internacionalización con Next.js, envíame un correo a [contact@juancman.dev](mailto:contact@juancman.dev)
+[Puedes hacer un fork de este template aquí](https://github.com/juanmanzanerod/next-intl-blog-template)

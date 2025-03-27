@@ -7,9 +7,9 @@ import { sortContentByDate } from '@/utils/sorts';
 import { getCollection } from 'astro:content';
 
 const pageData = {
-  title: 'juancmandev',
+  title: 'Juan Manzanero',
   description:
-    'Bienvenido a mi dominio, extraño. Soy juancmandev; Desarrollador Web, entusiasta de Linux, y defensor de la privacidad.',
+    'Bienvenido a mi dominio, extraño. Soy Juan Manzanero; Desarrollador Web, entusiasta de Linux, y defensor de la privacidad.',
 };
 
 const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
@@ -33,7 +33,7 @@ const lang = getLangFromUrl(Astro.url);
   <div class='prose prose-invert max-w-3xl mx-auto'>
     <h1 class='text-primary'>Bienvenido a mi dominio, extraño.</h1>
     <p>
-      Soy <strong class='text-primary'>juancmandev</strong>; <strong
+      Soy <strong class='text-primary'>Juan Manzanero</strong>; <strong
         >Desarrollador Web</strong
       >, entusiasta de <strong>Linux</strong> y defensor de la <strong
         >privacidad.</strong
