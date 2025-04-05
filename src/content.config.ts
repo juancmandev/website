@@ -4,8 +4,8 @@ import { glob } from 'astro/loaders';
 const contentSchema = z.object({
   title: z.string(),
   description: z.string(),
-  image: z.string(),
-  imageCaption: z.string(),
+  image: z.string().optional(),
+  imageCaption: z.string().optional(),
   date: z.coerce.date().optional(),
   tags: z.array(z.string()).optional(),
   author: z.string(),
